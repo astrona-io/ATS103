@@ -1,0 +1,272 @@
+# Course manifest for ATS103 - Replication, P2P Preheating & Remote Registries (Harbor).
+#
+# One entry per section under `modules:`. Each section lists, in order: its
+# README, then for each module the landing page (course.md), its parts
+# (course-0N-*.md), and right after the part a lab tests, the lab's
+# question.md reading and the `type: lab` entry. The module's summary page
+# comes last. The section capstone closes the section. Playgrounds are not
+# listed: the landing page's playground marker shows them. solution.md is
+# never listed.
+#
+# Every `path:` is relative to this file.
+
+training:
+  id: ATS103
+  title: "Harbor: Replication, P2P Preheating & Remote Registries"
+  maturity: draft
+  description: >
+    Training material covering the Replication, P2P Preheating & Remote
+    Registries domain of the Harbor training path: registry endpoints and
+    providers, push and pull replication rules with filters, flattening,
+    triggers and delete replication, executions and their logs, proxy cache
+    projects in front of Docker Hub, and P2P preheating with Dragonfly
+    provider instances and preheat policies. Each module pairs a layered
+    reader with an ungraded hands-on playground and a graded practice lab.
+    Each section closes with an integration capstone.
+    Written for Harbor 2.15.4 and the Harbor CLI v0.0.27.
+
+  certification:
+    name: Harbor
+    code: HARBOR
+    provider: Astrona
+    domain: Replication, P2P Preheating & Remote Registries
+    weight: 15
+
+modules:
+
+  - id: module-intro
+    title: "Introduction"
+    description: >
+      Start here. What this course trains you to do, how it is laid out, how
+      to get your machine ready with the astrona command-line tool, how the
+      content is written and checked, who maintains it, and how to report a
+      mistake.
+
+    content:
+      - type: reading
+        title: Introduction
+        path: sections/intro/README.md
+      - type: reading
+        title: "Welcome To The Course"
+        path: sections/intro/course-01-welcome.md
+      - type: reading
+        title: "Get Your Machine Ready"
+        path: sections/intro/course-02-get-your-machine-ready.md
+      - type: reading
+        title: "How This Course Is Made"
+        path: sections/intro/course-03-how-this-course-is-made.md
+
+  - id: module-010
+    title: "Registry Endpoints And Replication"
+    description: >
+      Registry endpoints and the providers Harbor can talk to, push-based and
+      pull-based replication rules with name and tag filters, destination
+      namespaces and flattening, the manual, scheduled and event-based
+      triggers, delete replication, and reading executions, tasks and logs.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-010/README.md
+
+      - type: reading
+        title: "Replicate Artifacts Between Registries"
+        path: sections/section-010/module-01/course.md
+      - type: reading
+        title: "Registry Endpoints And Providers"
+        path: sections/section-010/module-01/course-01-registry-endpoints-and-providers.md
+      - type: reading
+        title: "Replication Rules, Filters And Flattening"
+        path: sections/section-010/module-01/course-02-replication-rules-and-filters.md
+      - type: reading
+        title: "Triggers, Executions And Logs"
+        path: sections/section-010/module-01/course-03-triggers-executions-and-logs.md
+      - type: reading
+        title: Question
+        path: sections/section-010/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Replicate Release Tags To A Mirror Lab"
+        path: sections/section-010/module-01/labs/lab-01
+        difficulty: beginner
+        estimated_duration: 20m
+        topic: replication
+        task_kind: build
+        tags: [push-replication, replication-filter, flattening, event-trigger, distribution, harbor-api]
+        learning_goals:
+          - Write a push-based replication rule whose filters select only release tags
+          - Make the rule run on every push with an event-based trigger
+          - Prove that a release tag reaches the mirror and another tag does not
+        resources:
+          - name: "Creating a replication rule"
+            url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/create-replication-rules/
+          - name: "Creating replication endpoints"
+            url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/create-replication-endpoints/
+      - type: reading
+        title: Summary
+        path: sections/section-010/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-010/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Repair A Replication Pipeline Capstone"
+        path: sections/section-010/capstone/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 35m
+        topic: replication
+        task_kind: troubleshooting
+        tags: [registry-endpoint, replication-filter, event-trigger, delete-sync, replication-execution, jobservice]
+        learning_goals:
+          - Find why an endpoint and a replication rule move nothing from the executions and their logs
+          - Repair the endpoint and the rule in place instead of recreating them
+          - Prove that releases arrive in the mirror on push and disappear from it when deleted
+        resources:
+          - name: "Managing replications"
+            url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/manage-replications/
+          - name: "Creating a replication rule"
+            url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/create-replication-rules/
+          - name: "Creating replication endpoints"
+            url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/create-replication-endpoints/
+
+  - id: module-020
+    title: "Proxy Cache Projects"
+    description: >
+      Why a registry needs a cache in front of Docker Hub and other public
+      registries, creating a proxy cache project from a registry endpoint,
+      the pull path with the library prefix, what the cache does when the
+      upstream changes or is unreachable, and the default retention policy.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-020/README.md
+
+      - type: reading
+        title: "Cache Docker Hub With A Proxy Cache Project"
+        path: sections/section-020/module-01/course.md
+      - type: reading
+        title: "Why Cache A Remote Registry"
+        path: sections/section-020/module-01/course-01-why-cache-a-remote-registry.md
+      - type: reading
+        title: "Creating And Using A Proxy Cache Project"
+        path: sections/section-020/module-01/course-02-creating-a-proxy-cache-project.md
+      - type: reading
+        title: Question
+        path: sections/section-020/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Pull Docker Hub Images Through A Proxy Cache Lab"
+        path: sections/section-020/module-01/labs/lab-01
+        difficulty: beginner
+        estimated_duration: 15m
+        topic: proxy-cache
+        task_kind: build
+        tags: [proxy-cache, docker-hub, registry-endpoint, provider, regctl, harbor-cli]
+        learning_goals:
+          - Create a Docker Hub registry endpoint and a public proxy cache project that uses it
+          - Pull an official image through the cache with the library prefix
+          - Prove that the image is now cached in the project
+        resources:
+          - name: "Configure proxy cache"
+            url: https://goharbor.io/docs/2.15.0/administration/configure-proxy-cache/
+          - name: "Creating replication endpoints"
+            url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/create-replication-endpoints/
+      - type: reading
+        title: "Cache Behaviour, Retention And Limits"
+        path: sections/section-020/module-01/course-03-cache-behaviour-and-retention.md
+      - type: reading
+        title: Summary
+        path: sections/section-020/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-020/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Route Base Image Pulls Through The Cache Capstone"
+        path: sections/section-020/capstone/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 30m
+        topic: proxy-cache
+        task_kind: migration
+        tags: [proxy-cache, docker-hub, registry-endpoint, provider, rate-limit, regctl]
+        learning_goals:
+          - Replace a broken endpoint and a normal project with a working Docker Hub proxy cache
+          - Move a pull list from Docker Hub to the proxy cache without changing the images
+          - Prove that every endpoint is healthy and every listed image resolves through Harbor
+        resources:
+          - name: "Configure proxy cache"
+            url: https://goharbor.io/docs/2.15.0/administration/configure-proxy-cache/
+          - name: "Creating replication endpoints"
+            url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/create-replication-endpoints/
+
+  - id: module-030
+    title: "P2P Preheating With Dragonfly"
+    description: >
+      Peer-to-peer image distribution and why preheating helps, the parts of
+      Dragonfly, registering Dragonfly as a P2P provider instance in Harbor,
+      and preheat policies with filters, criteria, triggers and executions.
+
+    content:
+      - type: reading
+        title: Section Overview
+        path: sections/section-030/README.md
+
+      - type: reading
+        title: "Preheat Images Into Dragonfly"
+        path: sections/section-030/module-01/course.md
+      - type: reading
+        title: "P2P Distribution And Dragonfly"
+        path: sections/section-030/module-01/course-01-p2p-distribution-and-dragonfly.md
+      - type: reading
+        title: "Registering Dragonfly As A Provider Instance"
+        path: sections/section-030/module-01/course-02-registering-a-provider-instance.md
+      - type: reading
+        title: "Preheat Policies, Triggers And Executions"
+        path: sections/section-030/module-01/course-03-preheat-policies.md
+      - type: reading
+        title: Question
+        path: sections/section-030/module-01/labs/lab-01/question.md
+      - type: lab
+        title: "Preheat Release Tags With Dragonfly Lab"
+        path: sections/section-030/module-01/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: preheat
+        task_kind: build
+        tags: [p2p, dragonfly, provider-instance, preheat-policy, event-trigger, harbor-cli]
+        learning_goals:
+          - Register the Dragonfly manager as an enabled, healthy P2P provider instance
+          - Write a preheat policy that selects only release tags and runs on push
+          - Explain what a real installation adds before a preheat execution succeeds
+        resources:
+          - name: "P2P preheat"
+            url: https://goharbor.io/docs/2.15.0/administration/p2p-preheat/
+          - name: "Manage preheat provider instances"
+            url: https://goharbor.io/docs/2.15.0/administration/p2p-preheat/manage-preheat-providers/
+          - name: "Dragonfly preheat and Harbor"
+            url: https://d7y.io/docs/advanced-guides/open-api/preheat/
+      - type: reading
+        title: Summary
+        path: sections/section-030/module-01/course-04-summary.md
+
+      - type: reading
+        title: Question
+        path: sections/section-030/capstone/labs/lab-01/question.md
+      - type: lab
+        title: "Wire A Release Pipeline End To End Capstone"
+        path: sections/section-030/capstone/labs/lab-01
+        difficulty: advanced
+        estimated_duration: 40m
+        topic: preheat
+        task_kind: troubleshooting
+        tags: [push-replication, event-trigger, provider-instance, preheat-policy, dragonfly, replication-execution]
+        learning_goals:
+          - Find why a release push neither replicates nor preheats
+          - Repair the replication rule, the provider instance and the preheat policy in place
+          - Prove that a release tag reaches the mirror on push and the preheat set-up is healthy
+        resources:
+          - name: "Creating a replication rule"
+            url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/create-replication-rules/
+          - name: "Manage preheat provider instances"
+            url: https://goharbor.io/docs/2.15.0/administration/p2p-preheat/manage-preheat-providers/
+          - name: "P2P preheat"
+            url: https://goharbor.io/docs/2.15.0/administration/p2p-preheat/

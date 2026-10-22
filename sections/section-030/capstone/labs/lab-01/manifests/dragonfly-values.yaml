@@ -1,0 +1,44 @@
+# Helm values for Dragonfly 2.5.2 (chart dragonfly 1.8.6): the smallest
+# install that Harbor can register as a preheat provider. One manager, one
+# scheduler and one seed peer; no per-node client (the kind node does not pull
+# through Dragonfly in this course). MySQL and Redis come from
+# dragonfly-deps.yaml.
+manager:
+  enable: true
+  replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+scheduler:
+  enable: true
+  replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+seedClient:
+  enable: true
+  replicas: 1
+  persistence:
+    enable: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+client:
+  enable: false
+mysql:
+  enable: false
+redis:
+  enable: false
+externalMysql:
+  migrate: true
+  host: mysql.dragonfly-system.svc.cluster.local
+  username: dragonfly
+  password: dragonfly
+  database: manager
+  port: 3306
+externalRedis:
+  addrs:
+    - redis.dragonfly-system.svc.cluster.local:6379

@@ -1,0 +1,24 @@
+# Preheat Images Into Dragonfly (PLAYGROUND) — Playground environment
+# A clean sandbox: it spins up, runs OS prep, then stays running for free
+# exploration. No task, no grading, no `astrona submit`.
+# Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-103-playground-030-01"
+  docs:
+    guide: "docs/overview.md"
+
+bootstrap:
+  init:
+    - name: "prepare"
+      description: "Install Helm 3.22.1, make harbor.localtest.me and mirror.localtest.me resolve inside the cluster, install Harbor 2.15.4 and a minimal Dragonfly 2.5.2, start the workstation pod and the mirror registry, and copy podinfo into the project inventory."
+      type: "file"
+      source: "bootstrap/prepare.sh"
+  manifests:
+    - name: "lab-start"
+      description: "The workstation pod with the client tools, and the mirror registry (namespace mirror)."
+      type: "file"
+      source: "manifests/lab-start.yaml"
+
+teardown:
+  keepCluster: false

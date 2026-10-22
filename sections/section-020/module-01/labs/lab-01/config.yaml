@@ -1,0 +1,51 @@
+# Pull Docker Hub Images Through A Proxy Cache
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-103-lab-020-01"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "install-harbor"
+      description: "Installs Helm 3.22.1, the CoreDNS rewrites, Harbor 2.15.4, the workstation pod, the mirror registry and the project inventory with podinfo"
+      type: "file"
+      source: "bootstrap/01-install-harbor.sh"
+    - name: "ats-103-lab-020-01-setup"
+      description: "Checks that Harbor can reach the internet; no proxy cache exists"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-harbor"
+      description: "Waits until Harbor reports every component healthy and the workstation trusts its CA"
+      type: "file"
+      source: "testing/wait-for-harbor.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-hub-endpoint"
+      description: "Confirms a Docker Hub endpoint exists and Harbor can reach it"
+      type: "file"
+      source: "validation/validate-hub-endpoint.sh"
+    - name: "validate-proxy-project"
+      description: "Confirms dockerhub-proxy is a public proxy cache project for the Docker Hub endpoint"
+      type: "file"
+      source: "validation/validate-proxy-project.sh"
+    - name: "validate-alpine-cached"
+      description: "Confirms alpine:3.22 is cached in dockerhub-proxy"
+      type: "file"
+      source: "validation/validate-alpine-cached.sh"
+
+teardown:
+  keepCluster: false

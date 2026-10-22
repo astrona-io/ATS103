@@ -1,0 +1,59 @@
+# Repair A Replication Pipeline
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-103-capstone-010"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "install-harbor"
+      description: "Installs Helm 3.22.1, the CoreDNS rewrites, Harbor 2.15.4, the workstation pod, the mirror registry and the project inventory with podinfo"
+      type: "file"
+      source: "bootstrap/01-install-harbor.sh"
+    - name: "ats-103-capstone-010-setup"
+      description: "Creates the endpoint mirror on the wrong port and a disabled, manual rule release-to-mirror with a mistyped name filter"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-harbor"
+      description: "Waits until Harbor reports every component healthy and the workstation trusts its CA"
+      type: "file"
+      source: "testing/wait-for-harbor.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-endpoint-healthy"
+      description: "Confirms the endpoint mirror points at port 5001 and Harbor can reach it"
+      type: "file"
+      source: "validation/validate-endpoint-healthy.sh"
+    - name: "validate-same-rule"
+      description: "Confirms release-to-mirror is the original rule, enabled and event based"
+      type: "file"
+      source: "validation/validate-same-rule.sh"
+    - name: "validate-release-replicated"
+      description: "Pushes a new release tag and confirms it reaches the mirror"
+      type: "file"
+      source: "validation/validate-release-replicated.sh"
+    - name: "validate-dev-not-replicated"
+      description: "Pushes a non-release tag and confirms it stays in Harbor"
+      type: "file"
+      source: "validation/validate-dev-not-replicated.sh"
+    - name: "validate-delete-replicated"
+      description: "Deletes a replicated release and confirms it disappears from the mirror"
+      type: "file"
+      source: "validation/validate-delete-replicated.sh"
+
+teardown:
+  keepCluster: false

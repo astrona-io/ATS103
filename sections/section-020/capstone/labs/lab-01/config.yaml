@@ -1,0 +1,55 @@
+# Route Base Image Pulls Through The Cache
+# Astrona graded lab. Schema: internal/config.LabConfig.
+
+metadata:
+  name: "ats-103-capstone-020"
+  docs:
+    guide: "solution.md"
+    solution: "solution.md"
+    question: "question.md"
+    examQuestion: "question.md"
+    prerequisites: "prerequisites.md"
+
+bootstrap:
+  init:
+    - name: "install-harbor"
+      description: "Installs Helm 3.22.1, the CoreDNS rewrites, Harbor 2.15.4, the workstation pod, the mirror registry and the project inventory with podinfo"
+      type: "file"
+      source: "bootstrap/01-install-harbor.sh"
+    - name: "ats-103-capstone-020-setup"
+      description: "Creates a broken Docker Hub endpoint, a normal project named dockerhub-proxy and a CI pull list that goes straight to Docker Hub"
+      type: "file"
+      source: "bootstrap/02-seed-state.sh"
+
+testing:
+  init:
+    - name: "wait-for-harbor"
+      description: "Waits until Harbor reports every component healthy and the workstation trusts its CA"
+      type: "file"
+      source: "testing/wait-for-harbor.sh"
+    - name: "reference-solution"
+      description: "The remediation a correct learner performs; used by `astrona test`"
+      type: "file"
+      source: "solution/apply.sh"
+
+validation:
+  scripts:
+    - name: "validate-endpoints-healthy"
+      description: "Confirms every registry endpoint in Harbor is reachable"
+      type: "file"
+      source: "validation/validate-endpoints-healthy.sh"
+    - name: "validate-hub-proxy-project"
+      description: "Confirms hub is a public proxy cache project for Docker Hub"
+      type: "file"
+      source: "validation/validate-hub-proxy-project.sh"
+    - name: "validate-ci-config"
+      description: "Confirms ci-pull-config lists the same three images, pulled through hub"
+      type: "file"
+      source: "validation/validate-ci-config.sh"
+    - name: "validate-images-pull-through"
+      description: "Confirms each image in ci-pull-config can be pulled through Harbor"
+      type: "file"
+      source: "validation/validate-images-pull-through.sh"
+
+teardown:
+  keepCluster: false
