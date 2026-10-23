@@ -72,10 +72,14 @@ new_release() {
 }
 # --- end of shared helpers ---
 
+# Harbor caches the platform images of a multi-platform pull at once, but the
+# index with its tag 3.22 only when every image it lists is cached, or after
+# 30 minutes (src/controller/proxy/manifestcache.go). So any cached artifact in
+# library/alpine proves the pull went through the cache.
 for _ in $(seq 1 24); do
-  TAGS="$(harbor_api GET "/projects/dockerhub-proxy/repositories/library%252Falpine/artifacts?with_tag=true&page_size=50" 2>/dev/null | json '.[].tags[]?.name' 2>/dev/null || true)"
-  if printf '%s\n' "$TAGS" | grep -qx "3.22"; then echo "PASS: dockerhub-proxy/library/alpine:3.22 is in the cache."; exit 0; fi
+  COUNT="$(harbor_api GET "/projects/dockerhub-proxy/repositories/library%252Falpine/artifacts?page_size=50" 2>/dev/null | json 'length' 2>/dev/null || echo 0)"
+  if [ "${COUNT:-0}" -gt 0 ] 2>/dev/null; then echo "PASS: dockerhub-proxy/library/alpine holds $COUNT cached artifacts."; exit 0; fi
   sleep 5
 done
-echo "FAIL: dockerhub-proxy holds no library/alpine:3.22. Pull it through the cache with the library/ prefix."
+echo "FAIL: dockerhub-proxy holds no cached library/alpine. Pull alpine:3.22 through the cache with the library/ prefix."
 exit 1

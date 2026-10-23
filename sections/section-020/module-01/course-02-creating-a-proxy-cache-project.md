@@ -71,7 +71,9 @@ harbor_api GET '/projects/dockerhub-proxy/repositories/library%252Falpine/artifa
 
 The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so these commands run through `wst`, which adds `-t` (a terminal) to `kubectl exec`.
 
-The repository list shows `dockerhub-proxy/library/alpine`. The artifact list shows its digest and the tag `3.22`. In the API path, the repository name `library/alpine` is URL-encoded twice, `library%252Falpine`, because it contains a slash. Harbor stores the copy in the background after it serves the pull, so if the list is empty, wait a few seconds and ask again.
+The repository list shows `dockerhub-proxy/library/alpine`. The artifact list shows a few artifacts without a tag: one for each platform image the pull fetched. `alpine:3.22` is a multi-platform image, an index that lists one image per platform and some attestations.
+
+Harbor stores the index itself, with its tag `3.22`, only when every image it lists is in the cache, or after it has waited 30 minutes; then it keeps a shorter index of the images it has. Until then the copies are cached, just not under the tag. In the API path, the repository name `library/alpine` is URL-encoded twice, `library%252Falpine`, because it contains a slash. Harbor stores the copy in the background after it serves the pull, so if the list is empty, wait a few seconds and ask again.
 
 You can now put Harbor in front of Docker Hub and prove that an image came through it. What the cache does with that copy over the following days, and what it will not let you do with it, is still open.
 

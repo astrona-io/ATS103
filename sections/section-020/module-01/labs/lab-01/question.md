@@ -27,4 +27,4 @@ In Harbor:
 
 - A registry endpoint with the provider Docker Hub exists, and Harbor's connection test to it succeeds.
 - `dockerhub-proxy` is a public proxy cache project that uses that endpoint.
-- The project holds `library/alpine` with the tag `3.22`.
+- The project holds the repository `library/alpine` with at least one cached image. Harbor adds the tag `3.22` to the cached index later, so do not wait for the tag.

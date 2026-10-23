@@ -48,7 +48,7 @@ The copy fails, even for the administrator, and `regctl` prints the error Harbor
 
 The cache checks the upstream registry on every pull, not on a timer. When the tag `3.22` of `alpine` moves to a new digest at Docker Hub, the next pull through the cache gets the new digest and Harbor stores it. When Docker Hub cannot be reached, Harbor serves the copy it has. When the image has been deleted at Docker Hub, Harbor serves nothing, even if it still holds a copy.
 
-Pulling by digest instead of by tag makes the result fixed: a digest names one exact artifact, so the cache never has to ask whether it changed. Look at the digest your copy has:
+Pulling by digest instead of by tag makes the result fixed: a digest names one exact artifact, so the cache never has to ask whether it changed. Look at the digests your copy holds, one for each platform image Harbor has cached:
 
 ```sh
 harbor_api GET '/projects/dockerhub-proxy/repositories/library%252Falpine/artifacts?with_tag=true' \
