@@ -25,7 +25,7 @@ The endpoint `dockerhub` has the provider `docker-registry` and the URL `https:/
 An endpoint's provider cannot be changed, so create a new one with the provider `docker-hub` and test it:
 
 ```sh
-printf '%s' 'Harbor12345' | ws harbor login https://harbor.localtest.me:8443 -u admin --password-stdin
+ws harbor login https://harbor.localtest.me:8443 -u admin -p Harbor12345
 ws harbor registry create --name docker-hub --type docker-hub --url https://hub.docker.com
 harbor_api POST /registries/ping --data '{"id":<HUB_ID>}' -o /dev/null -w '%{http_code}\n'
 ```

@@ -40,10 +40,10 @@ harbor_api() {
 }
 ```
 
-The Harbor command-line tool `harbor` keeps its own sign-in, called a credential, in a configuration file in the pod. Sign it in once, with the password read from standard input so it does not appear in the process list:
+The Harbor command-line tool `harbor` keeps its own sign-in, called a credential, in a configuration file in the pod. Sign it in once. This lab-only sign-in passes the password with `-p`, which leaves it in the process list and the shell history. The `harbor` CLI (version 0.0.27) reads `--password-stdin` only from a terminal, as a hidden prompt; a password piped in from `echo` or `printf` fails with `inappropriate ioctl for device`. On a real system, run `harbor login` in an interactive shell (`kubectl exec -it`) and type the password at the prompt:
 
 ```sh
-printf '%s' 'Harbor12345' | ws harbor login https://harbor.localtest.me:8443 -u admin --password-stdin
+ws harbor login https://harbor.localtest.me:8443 -u admin -p Harbor12345
 ```
 
 The command checks the user name and password against Harbor before it saves them. If it fails, check that every pod in the namespace `harbor` is running.

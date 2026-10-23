@@ -30,7 +30,7 @@ harbor_api() {
   ws curl -sS -u admin:Harbor12345 -X "$method" -H 'Content-Type: application/json' \
     "https://harbor.localtest.me:8443/api/v2.0$path" "$@"
 }
-printf '%s' 'Harbor12345' | ws harbor login https://harbor.localtest.me:8443 -u admin --password-stdin
+ws harbor login https://harbor.localtest.me:8443 -u admin -p Harbor12345
 ws harbor instance create --name dragonfly --provider dragonfly \
   --url http://dragonfly-manager.dragonfly-system.svc.cluster.local:8080 \
   --authmode NONE --insecure --description "Dragonfly in dragonfly-system"

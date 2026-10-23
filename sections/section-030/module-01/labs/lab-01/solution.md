@@ -21,7 +21,7 @@ The manager answers `200`. It is ready for Harbor.
 ## Step 2: Register the instance
 
 ```sh
-printf '%s' 'Harbor12345' | ws harbor login https://harbor.localtest.me:8443 -u admin --password-stdin
+ws harbor login https://harbor.localtest.me:8443 -u admin -p Harbor12345
 ws harbor instance create --name dragonfly --provider dragonfly \
   --url http://dragonfly-manager.dragonfly-system.svc.cluster.local:8080 \
   --authmode NONE --insecure
