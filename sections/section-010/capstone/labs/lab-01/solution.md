@@ -8,6 +8,7 @@ The grader checks five things: the endpoint, that the rule is the original one a
 
 ```sh
 ws() { kubectl -n workstation exec -i deploy/workstation -- "$@"; }
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
 harbor_api() {
   local method="$1" path="$2"; shift 2
   ws curl -sS -u admin:Harbor12345 -X "$method" -H 'Content-Type: application/json' \
@@ -81,7 +82,9 @@ harbor_api DELETE /projects/inventory/repositories/podinfo/artifacts/v2.0.0 -w '
 ws regctl tag ls mirror.localtest.me:5001/inventory/podinfo
 ```
 
-`v2.0.0` is gone from the mirror. Two executions now show in `ws harbor replication executions list`, one for the push and one for the delete.
+`v2.0.0` is gone from the mirror. Two executions now show in `wst harbor replication executions list`, one for the push and one for the delete.
+
+The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so these commands run through `wst`, which adds `-t` (a terminal) to `kubectl exec`.
 
 ## Step 6: Submit
 

@@ -8,6 +8,7 @@ The grader checks two things: the instance `dragonfly` and the policy `release-p
 
 ```sh
 ws() { kubectl -n workstation exec -i deploy/workstation -- "$@"; }
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
 harbor_api() {
   local method="$1" path="$2"; shift 2
   ws curl -sS -u admin:Harbor12345 -X "$method" -H 'Content-Type: application/json' \
@@ -60,8 +61,10 @@ The filters and the trigger are JSON strings, which is why their quotes are esca
 
 ```sh
 harbor_api POST /projects/inventory/preheat/policies --data-binary @- < preheat-policy-release-preheat.json -w '%{http_code}\n'
-ws harbor project preheat policy list inventory
+wst harbor project preheat policy list inventory
 ```
+
+The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so these commands run through `wst`, which adds `-t` (a terminal) to `kubectl exec`.
 
 Harbor answers `201`, and the list shows `release-preheat`.
 
@@ -91,5 +94,5 @@ astrona submit -c sections/section-030/module-01/labs/lab-01
 
 ## Practice on your own
 
-- Push a release tag and look at the execution it starts with `ws harbor project preheat execution list inventory release-preheat`, then read why it fails in this environment.
+- Push a release tag and look at the execution it starts with `wst harbor project preheat execution list inventory release-preheat`, then read why it fails in this environment.
 - Try to delete the instance while the policy uses it.

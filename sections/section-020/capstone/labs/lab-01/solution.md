@@ -8,6 +8,7 @@ The grader checks four things: every endpoint is reachable, `hub` is a public Do
 
 ```sh
 ws() { kubectl -n workstation exec -i deploy/workstation -- "$@"; }
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
 harbor_api() {
   local method="$1" path="$2"; shift 2
   ws curl -sS -u admin:Harbor12345 -X "$method" -H 'Content-Type: application/json' \
@@ -79,7 +80,9 @@ for image in $(kubectl -n workstation get configmap ci-pull-config -o jsonpath='
 done
 ```
 
-Each line ends with `ok`. A few seconds later, `ws harbor repo list hub` shows the three repositories.
+Each line ends with `ok`. A few seconds later, `wst harbor repo list hub` shows the three repositories.
+
+The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so these commands run through `wst`, which adds `-t` (a terminal) to `kubectl exec`.
 
 ## Step 6: Submit
 

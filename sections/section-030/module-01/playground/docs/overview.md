@@ -16,10 +16,11 @@ To open the Harbor web portal, run `kubectl -n harbor port-forward svc/harbor 84
 
 ## Helpers
 
-Paste these once in each new terminal. `ws` runs a command in the workstation pod. `harbor_api` calls Harbor's REST API as the administrator. `manager_health` asks the Dragonfly manager whether it is up.
+Paste these once in each new terminal. `ws` runs a command in the workstation pod. `wst` does the same with a terminal. The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so list and view commands run through `wst`, which adds `-t` (a terminal) to `kubectl exec`. `harbor_api` calls Harbor's REST API as the administrator. `manager_health` asks the Dragonfly manager whether it is up.
 
 ```sh
 ws() { kubectl -n workstation exec -i deploy/workstation -- "$@"; }
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
 harbor_api() {
   local method="$1" path="$2"; shift 2
   ws curl -sS -u admin:Harbor12345 -X "$method" -H 'Content-Type: application/json' \
@@ -30,7 +31,7 @@ manager_health() {
 }
 ```
 
-Use them like this: `ws harbor instance list`, `harbor_api GET /p2p/preheat/providers`, `manager_health`.
+Use them like this: `wst harbor instance list`, `harbor_api GET /p2p/preheat/providers`, `manager_health`.
 
 ## Practice tasks
 

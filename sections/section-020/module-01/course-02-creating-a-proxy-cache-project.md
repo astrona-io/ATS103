@@ -12,6 +12,7 @@ Define the helpers, sign the Harbor CLI in, and create the endpoint:
 
 ```sh
 ws() { kubectl -n workstation exec -i deploy/workstation -- "$@"; }
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
 harbor_api() {
   local method="$1" path="$2"; shift 2
   ws curl -sS -u admin:Harbor12345 -X "$method" -H 'Content-Type: application/json' \
@@ -63,10 +64,12 @@ The copy succeeds after a few seconds. Harbor fetched the image from Docker Hub,
 The cached image is an ordinary repository in the project, named after its path at Docker Hub:
 
 ```sh
-ws harbor repo list dockerhub-proxy
+wst harbor repo list dockerhub-proxy
 harbor_api GET '/projects/dockerhub-proxy/repositories/library%252Falpine/artifacts?with_tag=true' \
   | ws jq '.[] | {digest, tags: [.tags[]?.name]}'
 ```
+
+The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so these commands run through `wst`, which adds `-t` (a terminal) to `kubectl exec`.
 
 The repository list shows `dockerhub-proxy/library/alpine`. The artifact list shows its digest and the tag `3.22`. In the API path, the repository name `library/alpine` is URL-encoded twice, `library%252Falpine`, because it contains a slash. Harbor stores the copy in the background after it serves the pull, so if the list is empty, wait a few seconds and ask again.
 

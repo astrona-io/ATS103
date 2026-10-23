@@ -324,6 +324,7 @@ Pages define their helpers once per page:
 
 ```sh
 ws() { kubectl -n workstation exec -i deploy/workstation -- "$@"; }
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
 ```
 
 Inside the workstation, `regctl` must be told once that the mirror is plain

@@ -10,6 +10,7 @@ Every Harbor command runs in the `workstation` pod. Define the helpers, then lis
 
 ```sh
 ws() { kubectl -n workstation exec -i deploy/workstation -- "$@"; }
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
 harbor_api() {
   local method="$1" path="$2"; shift 2
   ws curl -sS -u admin:Harbor12345 -X "$method" -H 'Content-Type: application/json' \
@@ -80,7 +81,9 @@ ws regctl registry set mirror.localtest.me:5001 --tls disabled
 ws regctl tag ls mirror.localtest.me:5001/inventory/podinfo
 ```
 
-The list holds `v1.1.0` and not `dev-42`. If it is empty, check the executions with `ws harbor replication executions list`: a new execution with the trigger `event_based` should be there. The tag `v1.0.0` that existed before the rule is not in the mirror either, because an event-based rule copies only what is pushed after it exists. That is fine for this task.
+The list holds `v1.1.0` and not `dev-42`. If it is empty, check the executions with `wst harbor replication executions list`: a new execution with the trigger `event_based` should be there. The tag `v1.0.0` that existed before the rule is not in the mirror either, because an event-based rule copies only what is pushed after it exists. That is fine for this task.
+
+The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so these commands run through `wst`, which adds `-t` (a terminal) to `kubectl exec`.
 
 ## Step 5: Submit
 

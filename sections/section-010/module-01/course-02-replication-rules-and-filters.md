@@ -78,7 +78,7 @@ The field `dest_namespace_replace_count` is the flattening level: `1` means one 
 harbor_api POST /replication/policies --data-binary @- < replication-rule-copy-6x.json -w '%{http_code}\n'
 ```
 
-Harbor answers `201` when it saved the rule. The rule now exists in the web portal under **Administration**, **Replications**, and `ws harbor replication policies list` shows it too.
+Harbor answers `201` when it saved the rule. The rule now exists in the web portal under **Administration**, **Replications**, and `wst harbor replication policies list` shows it too. The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so that command runs through `wst`, which adds `-t` (a terminal) to `kubectl exec`; define it with `wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }`.
 
 ## Run it once and look at the mirror
 

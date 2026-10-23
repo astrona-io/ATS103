@@ -25,6 +25,7 @@ The playground's manager has no token configured for Harbor, so register it with
 
 ```sh
 ws() { kubectl -n workstation exec -i deploy/workstation -- "$@"; }
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
 harbor_api() {
   local method="$1" path="$2"; shift 2
   ws curl -sS -u admin:Harbor12345 -X "$method" -H 'Content-Type: application/json' \
@@ -44,8 +45,10 @@ Harbor reports whether it can reach each instance. Ping it and list the instance
 
 ```sh
 ws harbor instance ping dragonfly
-ws harbor instance list
+wst harbor instance list
 ```
+
+The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so these commands run through `wst`, which adds `-t` (a terminal) to `kubectl exec`.
 
 The ping reports success when Harbor's `core` component reached the Dragonfly manager. The list shows the instance with its vendor, endpoint and whether it is enabled. In the web portal, under **Distributions**, a reachable instance shows the status **Healthy** in a green box.
 

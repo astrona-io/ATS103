@@ -33,6 +33,7 @@ The commands in this module run in the `workstation` pod. Define a short helper 
 
 ```sh
 ws() { kubectl -n workstation exec -i deploy/workstation -- "$@"; }
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
 harbor_api() {
   local method="$1" path="$2"; shift 2
   ws curl -sS -u admin:Harbor12345 -X "$method" -H 'Content-Type: application/json' \
@@ -71,9 +72,11 @@ ws harbor registry create --name mirror --type docker-registry \
 Harbor's documentation says the remote registry must exist and be running when you create the endpoint, so create endpoints only for registries that answer. List the endpoints and look at the new one:
 
 ```sh
-ws harbor registry list
-ws harbor registry view mirror
+wst harbor registry list
+wst harbor registry view mirror
 ```
+
+The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so these commands run through `wst`, which adds `-t` (a terminal) to `kubectl exec`.
 
 The list shows one endpoint named `mirror`, with its provider and URL. The view adds its id, a number that the REST API uses to refer to it. Note that id; rules refer to the endpoint by it.
 

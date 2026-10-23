@@ -40,10 +40,11 @@ After a few seconds, `6.15.1` is in the mirror. Nobody started the rule: the pus
 
 ## Executions, tasks and logs
 
-Every run of a rule is an **execution**, and every artifact copied in it is a **task**. A failed copy shows up as a failed task, so this is where you look when an artifact did not arrive. List the executions of all rules with the CLI:
+Every run of a rule is an **execution**, and every artifact copied in it is a **task**. A failed copy shows up as a failed task, so this is where you look when an artifact did not arrive. List the executions of all rules with the CLI. The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so this command runs through `wst`, which adds `-t` (a terminal) to `kubectl exec`:
 
 ```sh
-ws harbor replication executions list
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
+wst harbor replication executions list
 ```
 
 Each line is one execution, with its id, the rule, its trigger, its status and how many tasks succeeded and failed. The event-based run from the last step is listed with the trigger `event_based`. To see the tasks of one execution, and the log of one task, use the REST API with the ids from the list:

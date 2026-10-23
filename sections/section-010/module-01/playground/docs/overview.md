@@ -14,10 +14,11 @@ To open the Harbor web portal, run `kubectl -n harbor port-forward svc/harbor 84
 
 ## Helpers
 
-Paste these once in each new terminal. `ws` runs a command in the workstation pod. `harbor_api` calls Harbor's REST API as the administrator. `mirror_tags` lists the tags of a repository in the mirror. `new_tag` pushes a copy of `podinfo:6.15.0` under a new tag with its own digest, so deleting it later does not delete the other tags.
+Paste these once in each new terminal. `ws` runs a command in the workstation pod. `wst` does the same with a terminal. The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so list and view commands run through `wst`, which adds `-t` (a terminal) to `kubectl exec`. `harbor_api` calls Harbor's REST API as the administrator. `mirror_tags` lists the tags of a repository in the mirror. `new_tag` pushes a copy of `podinfo:6.15.0` under a new tag with its own digest, so deleting it later does not delete the other tags.
 
 ```sh
 ws() { kubectl -n workstation exec -i deploy/workstation -- "$@"; }
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
 harbor_api() {
   local method="$1" path="$2"; shift 2
   ws curl -sS -u admin:Harbor12345 -X "$method" -H 'Content-Type: application/json' \
@@ -34,7 +35,7 @@ new_tag() {
 }
 ```
 
-Use them like this: `ws harbor registry list`, `harbor_api GET /replication/adapters`, `mirror_tags inventory/podinfo`, `new_tag v1.1.0`.
+Use them like this: `wst harbor registry list`, `harbor_api GET /replication/adapters`, `mirror_tags inventory/podinfo`, `new_tag v1.1.0`.
 
 ## Practice tasks
 

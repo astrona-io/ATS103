@@ -47,10 +47,11 @@ The repository filter `**` selects every repository of the project, and the tag 
 harbor_api POST /projects/inventory/preheat/policies --data-binary @- < preheat-policy-release-preheat.json -w '%{http_code}\n'
 ```
 
-Harbor answers `201`. List the project's policies with the CLI:
+Harbor answers `201`. List the project's policies with the CLI. The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so this command runs through `wst`, which adds `-t` (a terminal) to `kubectl exec`:
 
 ```sh
-ws harbor project preheat policy list inventory
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
+wst harbor project preheat policy list inventory
 ```
 
 The list shows `release-preheat` with its instance and trigger. In the web portal, the same policy is in the project's **P2P Preheat** tab, where you can also set the scope.
@@ -62,7 +63,7 @@ Every run of a policy is an **execution**, and every artifact sent to the engine
 ```sh
 ws regctl registry login harbor.localtest.me:8443 -u admin -p Harbor12345
 ws regctl image copy harbor.localtest.me:8443/inventory/podinfo:6.15.0 harbor.localtest.me:8443/inventory/podinfo:v1.2.0
-ws harbor project preheat execution list inventory release-preheat
+wst harbor project preheat execution list inventory release-preheat
 ```
 
 The push of `v1.2.0` was the event, and an execution for it appears in the list. In this playground, the execution does not end with `Success`. The instance uses no token, and the seed peer does not trust Harbor's certificate, so Dragonfly cannot complete the preheat. The execution's task log, in the web portal under the policy's executions, names the error Dragonfly returned. In a real installation with a token and a trusting seed peer, the same execution ends with `Success`, and the seed peer holds the image.

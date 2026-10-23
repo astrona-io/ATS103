@@ -8,6 +8,7 @@ The grader checks four things: the replication rule, a release pushed by the gra
 
 ```sh
 ws() { kubectl -n workstation exec -i deploy/workstation -- "$@"; }
+wst() { kubectl -n workstation exec -it deploy/workstation -- "$@"; }
 harbor_api() {
   local method="$1" path="$2"; shift 2
   ws curl -sS -u admin:Harbor12345 -X "$method" -H 'Content-Type: application/json' \
@@ -74,8 +75,10 @@ ws regctl registry login harbor.localtest.me:8443 -u admin -p Harbor12345
 ws regctl registry set mirror.localtest.me:5001 --tls disabled
 ws regctl image mod harbor.localtest.me:8443/inventory/podinfo:6.15.0 --create v4.0.0 --annotation org.example.build=v4.0.0
 ws regctl tag ls mirror.localtest.me:5001/inventory/podinfo
-ws harbor project preheat execution list inventory release-preheat
+wst harbor project preheat execution list inventory release-preheat
 ```
+
+The `harbor` CLI (version 0.0.27) draws lists and views as a table only on a terminal, so these commands run through `wst`, which adds `-t` (a terminal) to `kubectl exec`.
 
 The mirror lists `v4.0.0`, and the preheat policy shows a new execution for the push. That execution does not succeed in this environment, because the seed peer does not trust Harbor's certificate and no Dragonfly token exists; its existence shows the trigger works.
 
