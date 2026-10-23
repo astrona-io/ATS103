@@ -33,7 +33,7 @@ Replace `<HUB_ID>` with the endpoint's id from the list. The ping answers `200`:
 A project becomes a proxy cache only when it is created with an endpoint:
 
 ```sh
-ws harbor project create dockerhub-proxy --proxy-cache --registry-id <HUB_ID> --public
+ws harbor project create dockerhub-proxy --storage-limit -1 --proxy-cache --registry-id <HUB_ID> --public
 harbor_api GET /projects/dockerhub-proxy | ws jq '{name, registry_id, public: .metadata.public}'
 ```
 

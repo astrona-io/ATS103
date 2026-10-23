@@ -18,7 +18,7 @@ harbor_api() {
 printf '%s' 'Harbor12345' | ws harbor login https://harbor.localtest.me:8443 -u admin --password-stdin
 ws harbor registry create --name docker-hub --type docker-hub --url https://hub.docker.com
 HUB_ID="$(harbor_api GET '/registries?page_size=100' | ws jq -r '.[] | select(.name=="docker-hub") | .id')"
-ws harbor project create dockerhub-proxy --proxy-cache --registry-id "$HUB_ID" --public
+ws harbor project create dockerhub-proxy --storage-limit -1 --proxy-cache --registry-id "$HUB_ID" --public
 ws regctl image copy harbor.localtest.me:8443/dockerhub-proxy/library/alpine:3.22 ocidir:///tmp/alpine
 ```
 

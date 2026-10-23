@@ -35,11 +35,11 @@ The ping answers `200` when Harbor's `core` component reached Docker Hub. Do not
 A project is a proxy cache from the moment it is created, or never: Harbor sets the endpoint when it creates the project. Create a public project named `dockerhub-proxy` that caches the `docker-hub` endpoint:
 
 ```sh
-ws harbor project create dockerhub-proxy --proxy-cache --registry-id <HUB_ID> --public
+ws harbor project create dockerhub-proxy --storage-limit -1 --proxy-cache --registry-id <HUB_ID> --public
 harbor_api GET /projects/dockerhub-proxy | ws jq '{name, registry_id, metadata}'
 ```
 
-The project's `registry_id` is the endpoint's id, which is what makes it a proxy cache. `metadata.public` is `"true"`, so any client can pull through it without signing in to Harbor. A private proxy cache project works the same way, but clients must sign in first.
+The project's `registry_id` is the endpoint's id, which is what makes it a proxy cache. `metadata.public` is `"true"`, so any client can pull through it without signing in to Harbor. A private proxy cache project works the same way, but clients must sign in first. `--storage-limit -1` means no storage quota; without it, `harbor project create` opens an interactive form instead of creating the project.
 
 ## The pull path
 

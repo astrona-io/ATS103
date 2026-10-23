@@ -41,7 +41,7 @@ harbor_api DELETE /registries/<BROKEN_ID> -w '%{http_code}\n'
 A normal project cannot become a cache, so create `hub` with the new endpoint. The old project `dockerhub-proxy` is empty and can be deleted so nobody pulls from it by mistake:
 
 ```sh
-ws harbor project create hub --proxy-cache --registry-id <HUB_ID> --public
+ws harbor project create hub --storage-limit -1 --proxy-cache --registry-id <HUB_ID> --public
 harbor_api DELETE /projects/dockerhub-proxy -w '%{http_code}\n'
 ```
 
