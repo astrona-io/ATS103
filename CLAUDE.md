@@ -262,10 +262,12 @@ The facts most likely to be wrong, in the order to check them:
    strings; `POST /registries/ping` and `POST /p2p/preheat/instances/ping`
    answering `200` only when the remote side is healthy. Check them against
    `/devcenter-api-2.0` of the running Harbor first.
-2. **Whether Harbor accepts an endpoint or instance it cannot reach.** The
-   capstone seeds create an endpoint on the wrong port and a disabled instance
-   on the wrong port. If Harbor refuses to save them, seed a working object
-   first and break it with `PUT`.
+2. **Whether Harbor accepts an endpoint or instance it cannot reach.** Seen on
+   a live run (2026-10-23): Harbor 2.15.4 refuses an unreachable registry
+   endpoint on create **and** on update (400 "the registry is unhealthy").
+   The section 010 capstone therefore opens port 5000 on the `mirror` Service
+   for a moment, saves the endpoint with `:5000`, and removes the port. The
+   disabled P2P instance on the wrong port (section 030) is still unchecked.
 3. **Dragonfly in a small cluster.** The chart values in
    `manifests/dragonfly-values.yaml` (manager on, client off, seed peer
    without persistence, external MySQL and Redis) are written from the chart's
