@@ -61,8 +61,31 @@ new_release() {
 
 regctl_login
 
+# Harbor 2.15 refuses to save an endpoint it cannot reach (400 "the registry
+# is unhealthy"). The fault is an endpoint for an old registry that has since
+# been removed: a temporary Service old-registry answers while the endpoint is
+# saved, and is deleted afterwards.
 if [ -z "$(registry_id dockerhub)" ]; then
-  harbor_api POST /registries '{"name":"dockerhub","type":"docker-registry","url":"https://registry.example.invalid","insecure":false,"description":"Docker Hub"}' >/dev/null
+  kubectl apply -f - >/dev/null <<'YAML'
+apiVersion: v1
+kind: Service
+metadata:
+  name: old-registry
+  namespace: mirror
+spec:
+  selector:
+    app: mirror
+  ports:
+    - name: http
+      port: 5001
+      targetPort: http
+YAML
+  for _ in $(seq 1 30); do
+    harbor_api POST /registries '{"name":"dockerhub","type":"docker-registry","url":"http://old-registry.mirror.svc.cluster.local:5001","insecure":true,"description":"Docker Hub"}' >/dev/null 2>&1 && break
+    sleep 2
+  done
+  kubectl -n mirror delete service old-registry --ignore-not-found >/dev/null
+  [ -n "$(registry_id dockerhub)" ] || { echo "ERROR: could not create the endpoint dockerhub." >&2; exit 1; }
 fi
 if [ "$(harbor_status GET /projects/dockerhub-proxy)" != "200" ]; then
   harbor_api POST /projects '{"project_name":"dockerhub-proxy","metadata":{"public":"false"}}' >/dev/null

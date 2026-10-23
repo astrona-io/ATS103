@@ -19,7 +19,7 @@ harbor_api GET /projects/dockerhub-proxy | ws jq '{name, registry_id}'
 kubectl -n workstation get configmap ci-pull-config -o jsonpath='{.data.images}{"\n"}'
 ```
 
-The endpoint `dockerhub` has the provider `docker-registry` and the URL `https://registry.example.invalid`: the wrong provider and an address that does not exist. The project `dockerhub-proxy` has no `registry_id`, so it is a normal project, not a cache. The pull list points at `docker.io`.
+The endpoint `dockerhub` has the provider `docker-registry` and the URL `http://old-registry.mirror.svc.cluster.local:5001`, an old registry that has since been removed: the wrong provider and an address that no longer answers. The project `dockerhub-proxy` has no `registry_id`, so it is a normal project, not a cache. The pull list points at `docker.io`.
 
 ## Step 2: Replace the endpoint
 
