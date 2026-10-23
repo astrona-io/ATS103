@@ -61,13 +61,24 @@ new_release() {
 
 regctl_login
 
-# Harbor may refuse to create an endpoint it cannot reach, so the endpoint is
-# created on the right port first and then moved to the wrong one.
+# Harbor 2.15 checks an endpoint's health on every create and update and
+# refuses an unreachable one (400 "the registry is unhealthy"). To seed an
+# endpoint on the wrong port, the mirror Service answers on port 5000 for a
+# moment, the endpoint is saved with :5000, and then port 5000 is removed.
 if [ -z "$(registry_id mirror)" ]; then
   harbor_api POST /registries '{"name":"mirror","type":"docker-registry","url":"http://mirror.localtest.me:5001","insecure":true,"description":"The mirror registry"}' >/dev/null
 fi
 MIRROR_ID="$(registry_id mirror)"
-harbor_api PUT "/registries/$MIRROR_ID" '{"url":"http://mirror.localtest.me:5000","insecure":true}' >/dev/null
+kubectl -n mirror patch service mirror --type=json \
+  -p '[{"op":"add","path":"/spec/ports/-","value":{"name":"wrong-port","port":5000,"targetPort":"http"}}]' >/dev/null
+for _ in $(seq 1 30); do
+  harbor_api PUT "/registries/$MIRROR_ID" '{"url":"http://mirror.localtest.me:5000","insecure":true}' >/dev/null 2>&1 && break
+  sleep 2
+done
+kubectl -n mirror patch service mirror --type=json \
+  -p '[{"op":"remove","path":"/spec/ports/1"}]' >/dev/null
+[ "$(harbor_api GET "/registries/$MIRROR_ID" | json '.url')" = "http://mirror.localtest.me:5000" ] || {
+  echo "ERROR: could not move the endpoint mirror to port 5000." >&2; exit 1; }
 if [ -z "$(harbor_api GET "/replication/policies?page_size=100" | json '.[] | select(.name=="release-to-mirror") | .id')" ]; then
   harbor_api POST /replication/policies "{\"name\":\"release-to-mirror\",\"dest_registry\":{\"id\":$MIRROR_ID},\"dest_namespace\":\"inventory\",\"dest_namespace_replace_count\":1,\"filters\":[{\"type\":\"name\",\"value\":\"inventry/**\"},{\"type\":\"tag\",\"value\":\"v*\",\"decoration\":\"matches\"}],\"trigger\":{\"type\":\"manual\"},\"replicate_deletion\":false,\"override\":true,\"enabled\":false,\"speed\":-1}" >/dev/null
 fi
