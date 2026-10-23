@@ -16,6 +16,8 @@ An event-based rule is the one that keeps a mirror current without anyone thinki
 
 **Delete replication** (the setting "Delete remote resources when locally deleted", field `replicate_deletion`) works only with the event-based trigger. When it is on, deleting an artifact in Harbor also deletes it at the endpoint. That keeps a withdrawn release from staying available in the mirror.
 
+A rule read through the REST API shows the setting twice, as `replicate_deletion` and as the older `deletion`. When you write a rule, Harbor 2.15 reads only `deletion`, even though the API reference calls it deprecated, so set both fields to the same value.
+
 ## Make the rule event based
 
 Change the rule `copy-6x` so that it runs on every push and copies deletions too. The REST API replaces a whole rule at once, so read it, change the two fields with `jq`, and send it back. The commands use the `ws` and `harbor_api` helpers; define them again in a new terminal. Replace `<RULE_ID>` with the rule's id:
@@ -24,7 +26,7 @@ Change the rule `copy-6x` so that it runs on every push and copies deletions too
 
 ```sh
 harbor_api GET /replication/policies/<RULE_ID> \
-  | ws jq -c '.trigger={"type":"event_based"} | .replicate_deletion=true' \
+  | ws jq -c '.trigger={"type":"event_based"} | .deletion=true | .replicate_deletion=true' \
   | harbor_api PUT /replication/policies/<RULE_ID> --data-binary @- -w '%{http_code}\n'
 ```
 

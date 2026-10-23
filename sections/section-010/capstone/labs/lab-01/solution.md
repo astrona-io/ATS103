@@ -49,7 +49,7 @@ The rule has three more faults:
 - The trigger is `manual`, so even an enabled rule waits for someone to start it.
 - The name filter is `inventry/**`, which matches no repository. A manual start would have produced executions with zero tasks.
 
-`replicate_deletion` is also `false`, so a deleted release would stay in the mirror. The destination namespace and flattening are already right.
+`replicate_deletion` is also `false`, so a deleted release would stay in the mirror. When you write the rule, Harbor 2.15 reads the older field `deletion`, not `replicate_deletion`, so the command below sets both. The destination namespace and flattening are already right.
 
 ## Step 4: Fix the rule in place
 
@@ -58,7 +58,7 @@ Read the rule, change the four fields with `jq`, and send it back under the same
 ```sh
 harbor_api GET /replication/policies/<RULE_ID> \
   | ws jq -c '.filters=[{"type":"name","value":"inventory/**"},{"type":"tag","value":"v*","decoration":"matches"}]
-              | .trigger={"type":"event_based"} | .enabled=true | .replicate_deletion=true' \
+              | .trigger={"type":"event_based"} | .enabled=true | .deletion=true | .replicate_deletion=true' \
   | harbor_api PUT /replication/policies/<RULE_ID> --data-binary @- -w '%{http_code}\n'
 ```
 

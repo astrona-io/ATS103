@@ -255,7 +255,10 @@ The first version of this repository was written from the documentation
 
 The facts most likely to be wrong, in the order to check them:
 
-1. **Harbor REST API field names**, written from the Harbor v2.0 API as
+1. **Seen on a live run (2026-10-23):** when a replication rule is written, Harbor
+   2.15.4 reads `deletion`, not `replicate_deletion`
+   (`src/server/v2.0/handler/replication.go`); a GET returns both. Every write
+   sets both fields. **Harbor REST API field names**, written from the Harbor v2.0 API as
    remembered, not read from the Swagger file: `replicate_deletion`,
    `dest_namespace_replace_count`, filter `decoration`, the `trigger` object of
    a replication rule; the preheat policy's `filters` and `trigger` being JSON

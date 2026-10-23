@@ -64,6 +64,6 @@ regctl_login
 MIRROR_ID="$(registry_id mirror)"
 harbor_api PUT "/registries/$MIRROR_ID" '{"url":"http://mirror.localtest.me:5001","insecure":true}' >/dev/null
 RULE_ID="$(harbor_api GET "/replication/policies?page_size=100" | json '.[] | select(.name=="release-to-mirror") | .id')"
-UPDATED="$(harbor_api GET "/replication/policies/$RULE_ID" | ws jq -c '.filters=[{"type":"name","value":"inventory/**"},{"type":"tag","value":"v*","decoration":"matches"}] | .trigger={"type":"event_based"} | .enabled=true | .replicate_deletion=true')"
+UPDATED="$(harbor_api GET "/replication/policies/$RULE_ID" | ws jq -c '.filters=[{"type":"name","value":"inventory/**"},{"type":"tag","value":"v*","decoration":"matches"}] | .trigger={"type":"event_based"} | .enabled=true | .deletion=true | .replicate_deletion=true')"
 harbor_api PUT "/replication/policies/$RULE_ID" "$UPDATED" >/dev/null
 echo "[solution] Endpoint and rule repaired."
