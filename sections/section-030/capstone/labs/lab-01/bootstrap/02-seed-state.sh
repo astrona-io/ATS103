@@ -77,13 +77,17 @@ fi
 if [ "$(harbor_status GET /p2p/preheat/instances/dragonfly)" != "200" ]; then
   harbor_api POST /p2p/preheat/instances "{\"name\":\"dragonfly\",\"vendor\":\"dragonfly\",\"endpoint\":\"$DRAGONFLY_ENDPOINT\",\"auth_mode\":\"NONE\",\"enabled\":true,\"insecure\":true,\"default\":false}" >/dev/null
 fi
+# Break the instance before the policy uses it: Harbor refuses to disable an
+# instance that a preheat policy uses (412 Precondition Failed).
+if [ "$(harbor_status GET /projects/inventory/preheat/policies/release-preheat)" != "200" ]; then
+  BROKEN="$(harbor_api GET /p2p/preheat/instances/dragonfly | ws jq -c '.endpoint="http://dragonfly-manager.dragonfly-system.svc.cluster.local:65003" | .enabled=false')"
+  harbor_api PUT /p2p/preheat/instances/dragonfly "$BROKEN" >/dev/null
+fi
 PROJECT_ID="$(harbor_api GET /projects/inventory | json '.project_id')"
 INSTANCE_ID="$(harbor_api GET /p2p/preheat/instances/dragonfly | json '.id')"
 if [ "$(harbor_status GET /projects/inventory/preheat/policies/release-preheat)" != "200" ]; then
   harbor_api POST /projects/inventory/preheat/policies "{\"name\":\"release-preheat\",\"project_id\":$PROJECT_ID,\"provider_id\":$INSTANCE_ID,\"filters\":\"[{\\\"type\\\":\\\"repository\\\",\\\"value\\\":\\\"**\\\"},{\\\"type\\\":\\\"tag\\\",\\\"value\\\":\\\"**\\\"}]\",\"trigger\":\"{\\\"type\\\":\\\"manual\\\",\\\"trigger_setting\\\":{\\\"cron\\\":\\\"\\\"}}\",\"enabled\":true}" >/dev/null
 fi
-BROKEN="$(harbor_api GET /p2p/preheat/instances/dragonfly | ws jq -c '.endpoint="http://dragonfly-manager.dragonfly-system.svc.cluster.local:65003" | .enabled=false')"
-harbor_api PUT /p2p/preheat/instances/dragonfly "$BROKEN" >/dev/null
 RULE_ID="$(harbor_api GET "/replication/policies?page_size=100" | json '.[] | select(.name=="release-to-mirror") | .id')"
 POLICY_ID="$(harbor_api GET /projects/inventory/preheat/policies/release-preheat | json '.id')"
 kubectl -n workstation create configmap capstone-baseline \
