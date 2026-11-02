@@ -29,8 +29,6 @@ training:
     name: Harbor
     code: HARBOR
     provider: Astrona
-    domain: Replication, P2P Preheating & Remote Registries
-    weight: 15
 
 modules:
 
