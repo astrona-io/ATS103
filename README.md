@@ -41,12 +41,12 @@ nodes that will run them, through a peer-to-peer engine.
 
 | Module | Reader | Parts | Labs |
 | --- | --- | --- | --- |
-| 010-01 | [Replicate Artifacts Between Registries](sections/section-010/module-01/course.md) | 4 | [lab-01](sections/section-010/module-01/labs/lab-01) |
-| 010-02 | [Pull Vendor Images On A Schedule](sections/section-010/module-02/course.md) | 4 | [lab-01](sections/section-010/module-02/labs/lab-01) |
-| 020-01 | [Cache Docker Hub With A Proxy Cache Project](sections/section-020/module-01/course.md) | 4 | [lab-01](sections/section-020/module-01/labs/lab-01) |
-| 020-02 | [Run A Proxy Cache Project For A Team](sections/section-020/module-02/course.md) | 4 | [lab-01](sections/section-020/module-02/labs/lab-01) |
-| 030-01 | [Preheat Images Into Dragonfly](sections/section-030/module-01/course.md) | 4 | [lab-01](sections/section-030/module-01/labs/lab-01) |
-| 030-02 | [Preheat Policies In Depth](sections/section-030/module-02/course.md) | 4 | [lab-01](sections/section-030/module-02/labs/lab-01) |
+| 010-01 | [Replicate Artifacts Between Registries](sections/section-010/module-01/course.md) | 6 | [lab-01](sections/section-010/module-01/labs/lab-01) |
+| 010-02 | [Pull Vendor Images On A Schedule](sections/section-010/module-02/course.md) | 6 | [lab-01](sections/section-010/module-02/labs/lab-01) |
+| 020-01 | [Cache Docker Hub With A Proxy Cache Project](sections/section-020/module-01/course.md) | 6 | [lab-01](sections/section-020/module-01/labs/lab-01) |
+| 020-02 | [Run A Proxy Cache Project For A Team](sections/section-020/module-02/course.md) | 6 | [lab-01](sections/section-020/module-02/labs/lab-01) |
+| 030-01 | [Preheat Images Into Dragonfly](sections/section-030/module-01/course.md) | 6 | [lab-01](sections/section-030/module-01/labs/lab-01) |
+| 030-02 | [Preheat Policies In Depth](sections/section-030/module-02/course.md) | 6 | [lab-01](sections/section-030/module-02/labs/lab-01) |
 
 ---
 

@@ -103,8 +103,14 @@ modules:
         title: "Endpoint Credentials And Least Privilege"
         path: sections/section-010/module-01/course-04-endpoint-credentials.md
       - type: reading
+        title: "Delete Replication And Keeping Copies In Step"
+        path: sections/section-010/module-01/course-05-delete-replication.md
+      - type: reading
+        title: "Replication, Retention And Immutable Tags"
+        path: sections/section-010/module-01/course-06-replication-with-retention-and-immutability.md
+      - type: reading
         title: Summary
-        path: sections/section-010/module-01/course-05-summary.md
+        path: sections/section-010/module-01/course-07-summary.md
 
       - type: reading
         title: "Pull Vendor Images On A Schedule"
@@ -142,8 +148,14 @@ modules:
         title: "Failed Executions And How To Read Them"
         path: sections/section-010/module-02/course-04-failed-executions.md
       - type: reading
+        title: "Pulling From Docker Hub And Another Harbor"
+        path: sections/section-010/module-02/course-05-pulling-from-other-sources.md
+      - type: reading
+        title: "Planning A Replication Setup"
+        path: sections/section-010/module-02/course-06-planning-a-replication-setup.md
+      - type: reading
         title: Summary
-        path: sections/section-010/module-02/course-05-summary.md
+        path: sections/section-010/module-02/course-07-summary.md
       - type: quiz
         title: "Knowledge Check: Pull Replication, Schedules And Failures"
         path: sections/section-010/module-02/quiz.yaml
@@ -225,8 +237,14 @@ modules:
         title: "Using The Cache From Kubernetes"
         path: sections/section-020/module-01/course-04-using-the-cache-from-kubernetes.md
       - type: reading
+        title: "Proxy Cache With Other Upstream Registries"
+        path: sections/section-020/module-01/course-05-other-upstreams.md
+      - type: reading
+        title: "Scanning And Securing Cached Images"
+        path: sections/section-020/module-01/course-06-cache-and-vulnerabilities.md
+      - type: reading
         title: Summary
-        path: sections/section-020/module-01/course-05-summary.md
+        path: sections/section-020/module-01/course-07-summary.md
 
       - type: reading
         title: "Run A Proxy Cache Project For A Team"
@@ -264,8 +282,14 @@ modules:
         title: "Troubleshooting A Proxy Cache"
         path: sections/section-020/module-02/course-04-troubleshooting-a-proxy-cache.md
       - type: reading
+        title: "Cache Retention And Garbage Collection"
+        path: sections/section-020/module-02/course-05-retention-and-garbage-collection.md
+      - type: reading
+        title: "Caches For CI And Restricted Networks"
+        path: sections/section-020/module-02/course-06-cache-for-ci-and-air-gapped.md
+      - type: reading
         title: Summary
-        path: sections/section-020/module-02/course-05-summary.md
+        path: sections/section-020/module-02/course-07-summary.md
       - type: quiz
         title: "Knowledge Check: Run A Proxy Cache Project For A Team"
         path: sections/section-020/module-02/quiz.yaml
@@ -346,8 +370,14 @@ modules:
         title: "How Nodes Pull Through Dragonfly"
         path: sections/section-030/module-01/course-04-how-nodes-pull-through-dragonfly.md
       - type: reading
+        title: "Securing The Connection To Dragonfly"
+        path: sections/section-030/module-01/course-05-dragonfly-security.md
+      - type: reading
+        title: "Provider Choices And When Not To Use P2P"
+        path: sections/section-030/module-01/course-06-p2p-providers.md
+      - type: reading
         title: Summary
-        path: sections/section-030/module-01/course-05-summary.md
+        path: sections/section-030/module-01/course-07-summary.md
 
       - type: reading
         title: "Preheat Policies In Depth"
@@ -387,8 +417,14 @@ modules:
         title: "Troubleshooting Preheat"
         path: sections/section-030/module-02/course-04-troubleshooting-preheat.md
       - type: reading
+        title: "Planning Preheat For A Rollout"
+        path: sections/section-030/module-02/course-05-rollout-planning.md
+      - type: reading
+        title: "Preheat Together With Replication"
+        path: sections/section-030/module-02/course-06-preheat-and-replication-together.md
+      - type: reading
         title: Summary
-        path: sections/section-030/module-02/course-05-summary.md
+        path: sections/section-030/module-02/course-07-summary.md
       - type: quiz
         title: "Knowledge Check: Preheat Policies In Depth"
         path: sections/section-030/module-02/quiz.yaml
