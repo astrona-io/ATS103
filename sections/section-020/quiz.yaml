@@ -1,0 +1,245 @@
+# Knowledge check for section 020. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats103-020
+course_id: ATS103
+exam_code: HARBOR
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-020
+  title: "Proxy Cache Projects"
+placement:
+  position: after
+  reading: sections/section-020/capstone/labs/lab-01/question.md
+questions:
+  - id: ats103-020-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain the rate limit problem"
+    source_readings:
+      - sections/section-020/module-01/course-01-why-cache-a-remote-registry.md
+    prompt: "Many nodes behind one network address pull images straight from Docker Hub. Which problem can stop all of the pulls?"
+    options:
+      - id: a
+        text: "The anonymous rate limit, which the nodes share because they use the same address."
+        explanation: "Correct. When the limit is used up, every pull fails until the window moves on."
+      - id: b
+        text: "Docker Hub allows only one pull at a time per cluster."
+        explanation: "Not correct. Docker Hub limits pulls per time window, not the number of simultaneous pulls."
+      - id: c
+        text: "Docker Hub refuses official images such as `alpine` without a login."
+        explanation: "Not correct. Official images can be pulled anonymously, within the rate limit."
+      - id: d
+        text: "Docker Hub allows each image to be pulled only once per day."
+        explanation: "Not correct. The limit counts pulls per address in a time window. It does not limit one image."
+    correct_option: a
+    explanation: "Correct. When the limit is used up, every pull fails until the window moves on."
+
+  - id: ats103-020-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Describe cache behaviour when the upstream is down"
+    source_readings:
+      - sections/section-020/module-01/course-01-why-cache-a-remote-registry.md
+    prompt: "Docker Hub cannot be reached. A client pulls an image that Harbor already cached. What does Harbor do?"
+    options:
+      - id: a
+        text: "It fails the pull, because it cannot check the upstream."
+        explanation: "Not correct. Harbor serves its copy when the upstream cannot be reached."
+      - id: b
+        text: "It serves its cached copy."
+        explanation: "Correct. Harbor serves the copy when the upstream registry is unreachable."
+      - id: c
+        text: "It waits until Docker Hub answers again."
+        explanation: "Not correct. Harbor does not wait. It answers from its copy."
+      - id: d
+        text: "It deletes the copy and returns an empty answer."
+        explanation: "Not correct. Harbor does not delete the copy when the upstream is unreachable."
+    correct_option: b
+    explanation: "Correct. Harbor serves the copy when the upstream registry is unreachable."
+
+  - id: ats103-020-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Describe cache behaviour when the image is gone upstream"
+    source_readings:
+      - sections/section-020/module-01/course-01-why-cache-a-remote-registry.md
+    prompt: "An image was deleted at Docker Hub, but Harbor still holds a copy. What does a pull through the cache return?"
+    options:
+      - id: a
+        text: "The cached copy, because Harbor never checks the upstream."
+        explanation: "Not correct. Harbor checks the upstream on every pull."
+      - id: b
+        text: "The cached copy, but only if the client signs in."
+        explanation: "Not correct. Signing in does not change this rule."
+      - id: c
+        text: "Nothing. Harbor serves no image that no longer exists upstream."
+        explanation: "Correct. The copy is not served when the image is gone from the upstream registry."
+      - id: d
+        text: "The newest image of the same name from Docker Hub."
+        explanation: "Not correct. Harbor does not substitute another image."
+    correct_option: c
+    explanation: "Correct. The copy is not served when the image is gone from the upstream registry."
+
+  - id: ats103-020-q04
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Choose the provider for a Docker Hub endpoint"
+    source_readings:
+      - sections/section-020/module-01/course-02-creating-a-proxy-cache-project.md
+    prompt: "Which provider do you choose for the endpoint of a Docker Hub proxy cache?"
+    options:
+      - id: a
+        text: "`docker-registry`"
+        explanation: "Not correct. This provider is for a plain CNCF Distribution registry, not for Docker Hub."
+      - id: b
+        text: "`harbor`"
+        explanation: "Not correct. This provider is for another Harbor, not for Docker Hub."
+      - id: c
+        text: "`proxy-cache`"
+        explanation: "Not correct. This is not a provider name. Harbor reports the real names at `/replication/adapters`."
+      - id: d
+        text: "`docker-hub`"
+        explanation: "Correct. The endpoint must use the provider of the registry it caches."
+    correct_option: d
+    explanation: "Correct. The endpoint must use the provider of the registry it caches."
+
+  - id: ats103-020-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Write the pull path through a proxy cache"
+    source_readings:
+      - sections/section-020/module-01/course-02-creating-a-proxy-cache-project.md
+    prompt: "The proxy cache project is `dockerhub-proxy`. Which path pulls the official image `alpine:3.22` through Harbor?"
+    options:
+      - id: a
+        text: "`harbor.localtest.me:8443/dockerhub-proxy/library/alpine:3.22`"
+        explanation: "Correct. Official images live under the namespace `library` at Docker Hub, and the path must say so."
+      - id: b
+        text: "`harbor.localtest.me:8443/dockerhub-proxy/alpine:3.22`"
+        explanation: "Not correct. This asks Docker Hub for `alpine` outside `library`, which does not exist."
+      - id: c
+        text: "`harbor.localtest.me:8443/library/dockerhub-proxy/alpine:3.22`"
+        explanation: "Not correct. The project name comes first after the address. `library` belongs after it."
+      - id: d
+        text: "`harbor.localtest.me:8443/library/alpine:3.22`"
+        explanation: "Not correct. This is the default project `library` in Harbor. It is not the proxy cache."
+    correct_option: a
+    explanation: "Correct. Official images live under the namespace `library` at Docker Hub, and the path must say so."
+
+  - id: ats103-020-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know how a project becomes a proxy cache"
+    source_readings:
+      - sections/section-020/module-01/course-02-creating-a-proxy-cache-project.md
+    prompt: "A normal project named `images` already exists. How do you make it a proxy cache for Docker Hub?"
+    options:
+      - id: a
+        text: "Edit the project and select the Docker Hub endpoint."
+        explanation: "Not correct. Harbor sets the endpoint only at creation."
+      - id: b
+        text: "You cannot. Create a new project and set the endpoint when you create it."
+        explanation: "Correct. A project is a proxy cache from the moment it is created, or never."
+      - id: c
+        text: "Set `metadata.public` to `true` on the project."
+        explanation: "Not correct. That setting makes a project public. It does not make it a proxy cache."
+      - id: d
+        text: "Create a replication rule that pulls from Docker Hub into the project."
+        explanation: "Not correct. A replication rule copies artifacts. It does not make the project a proxy cache."
+    correct_option: b
+    explanation: "Correct. A project is a proxy cache from the moment it is created, or never."
+
+  - id: ats103-020-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Tell what the registry_id of a project means"
+    source_readings:
+      - sections/section-020/module-01/course-02-creating-a-proxy-cache-project.md
+    prompt: "A project has a `registry_id` in the API output. What does it tell you?"
+    options:
+      - id: a
+        text: "The project is replicated to that registry."
+        explanation: "Not correct. Replication rules do that. They do not set `registry_id`."
+      - id: b
+        text: "The project is public."
+        explanation: "Not correct. Public access is in `metadata.public`."
+      - id: c
+        text: "The project is a proxy cache, and the value is the id of its registry endpoint."
+        explanation: "Correct. A proxy cache project is the one kind of project whose `registry_id` points at an endpoint."
+      - id: d
+        text: "The project has a tag retention policy with that id."
+        explanation: "Not correct. The retention policy has its own field, `retention_id`."
+    correct_option: c
+    explanation: "Correct. A proxy cache project is the one kind of project whose `registry_id` points at an endpoint."
+
+  - id: ats103-020-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Pin an image with a digest"
+    source_readings:
+      - sections/section-020/module-01/course-03-cache-behaviour-and-retention.md
+    prompt: "How do you make a pull through the cache return the same image every time, even when the upstream tag moves?"
+    options:
+      - id: a
+        text: "Pull by the tag, because Harbor freezes a tag after the first pull."
+        explanation: "Not correct. A tag follows the upstream tag when it moves."
+      - id: b
+        text: "Turn off the retention policy of the project."
+        explanation: "Not correct. Retention decides when copies expire. It does not fix a tag."
+      - id: c
+        text: "Set the bandwidth of the project to `-1`."
+        explanation: "Not correct. Bandwidth limits the speed of upstream pulls. It does not fix an image."
+      - id: d
+        text: "Pull by digest, because a digest names one exact artifact."
+        explanation: "Correct. The cache never has to ask whether a digest changed."
+    correct_option: d
+    explanation: "Correct. The cache never has to ask whether a digest changed."
+
+  - id: ats103-020-q09
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "State the default retention of a proxy cache"
+    source_readings:
+      - sections/section-020/module-01/course-03-cache-behaviour-and-retention.md
+    prompt: "What is the default tag retention policy of a new proxy cache project?"
+    options:
+      - id: a
+        text: "It keeps artifacts that were pulled within the last 7 days."
+        explanation: "Correct. Harbor keeps an artifact only while it is used."
+      - id: b
+        text: "It keeps every artifact until an administrator deletes it."
+        explanation: "Not correct. The default policy removes artifacts that are not used."
+      - id: c
+        text: "It keeps the last 7 versions of each repository."
+        explanation: "Not correct. The default rule counts days since the last pull, not versions."
+      - id: d
+        text: "It keeps artifacts for 7 days after they were first cached."
+        explanation: "Not correct. The 7 days count from the last pull, not from the first copy."
+    correct_option: a
+    explanation: "Correct. Harbor keeps an artifact only while it is used."
+
+  - id: ats103-020-q10
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know that a proxy cache refuses pushes"
+    source_readings:
+      - sections/section-020/module-01/course-03-cache-behaviour-and-retention.md
+    prompt: "What happens when an administrator pushes an image into a proxy cache project?"
+    options:
+      - id: a
+        text: "Harbor accepts the push and uploads the image to Docker Hub."
+        explanation: "Not correct. Harbor never pushes to the upstream registry from a cache project."
+      - id: b
+        text: "Harbor refuses the push. The cache holds only what the upstream registry serves."
+        explanation: "Correct. Own images belong in normal projects."
+      - id: c
+        text: "Harbor accepts the push and keeps the image in the cache."
+        explanation: "Not correct. Pushes into a proxy cache project are refused, even for the administrator."
+      - id: d
+        text: "Harbor accepts the push only when the project is private."
+        explanation: "Not correct. Public or private does not change this. Pushes are refused."
+    correct_option: b
+    explanation: "Correct. Own images belong in normal projects."

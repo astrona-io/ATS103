@@ -1,0 +1,245 @@
+# Knowledge check for section 010. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats103-010
+course_id: ATS103
+exam_code: HARBOR
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-010
+  title: "Registry Endpoints And Replication"
+placement:
+  position: after
+  reading: sections/section-010/capstone/labs/lab-01/question.md
+questions:
+  - id: ats103-010-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain what a registry endpoint is"
+    source_readings:
+      - sections/section-010/module-01/course-01-registry-endpoints-and-providers.md
+    prompt: "What is a registry endpoint in Harbor?"
+    options:
+      - id: a
+        text: "Harbor's record of one remote registry, with its provider, URL and credentials, which rules refer to by name."
+        explanation: "Correct. Rules use the endpoint instead of carrying their own address and password."
+      - id: b
+        text: "A replication job that copies artifacts to a remote registry every hour."
+        explanation: "Not correct. A copy job is an execution of a rule. The endpoint only describes the remote registry."
+      - id: c
+        text: "A Harbor project that stores the artifacts copied from another registry."
+        explanation: "Not correct. A project stores artifacts. An endpoint stores only the address and sign-in of a registry."
+      - id: d
+        text: "A filter that selects repositories by name in a replication rule."
+        explanation: "Not correct. Filters belong to a rule. An endpoint has no filters."
+    correct_option: a
+    explanation: "Correct. Rules use the endpoint instead of carrying their own address and password."
+
+  - id: ats103-010-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Choose the right provider for an endpoint"
+    source_readings:
+      - sections/section-010/module-01/course-01-registry-endpoints-and-providers.md
+    prompt: "You register a plain CNCF Distribution registry as an endpoint with the provider `harbor`. The URL is correct. What happens?"
+    options:
+      - id: a
+        text: "The endpoint works, because the URL alone decides how Harbor connects."
+        explanation: "Not correct. The URL is not enough. Each provider is a separate adapter with its own API calls."
+      - id: b
+        text: "The endpoint fails, because Harbor speaks the Harbor API to a registry that does not offer it."
+        explanation: "Correct. The provider decides which API Harbor uses, so the right URL with the wrong provider still fails."
+      - id: c
+        text: "Harbor detects the real registry type and switches the provider itself."
+        explanation: "Not correct. Harbor does not detect the type. You must choose the provider."
+      - id: d
+        text: "The endpoint works, but only for pull-based rules."
+        explanation: "Not correct. The provider mismatch breaks both push and pull rules."
+    correct_option: b
+    explanation: "Correct. The provider decides which API Harbor uses, so the right URL with the wrong provider still fails."
+
+  - id: ats103-010-q03
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name the component that copies artifacts"
+    source_readings:
+      - sections/section-010/module-01/course-01-registry-endpoints-and-providers.md
+    prompt: "Which Harbor component uses an endpoint's URL and credentials when it copies artifacts to the remote registry?"
+    options:
+      - id: a
+        text: "`core`, the API server that stores the endpoint."
+        explanation: "Not correct. `core` stores the endpoint and starts the job, but it does not copy the artifacts."
+      - id: b
+        text: "`registry`, the component that stores Harbor's own images."
+        explanation: "Not correct. `registry` serves Harbor's own artifacts. It does not run replication jobs."
+      - id: c
+        text: "`jobservice`, the component that runs Harbor's background jobs."
+        explanation: "Correct. `core` stores the endpoint and `jobservice` runs the copy."
+      - id: d
+        text: "`portal`, the web interface."
+        explanation: "Not correct. The portal only shows data. It does not copy anything."
+    correct_option: c
+    explanation: "Correct. `core` stores the endpoint and `jobservice` runs the copy."
+
+  - id: ats103-010-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Test an endpoint connection"
+    source_readings:
+      - sections/section-010/module-01/course-01-registry-endpoints-and-providers.md
+    prompt: "Which API call tells you whether Harbor can reach the registry behind an endpoint with the id 3?"
+    options:
+      - id: a
+        text: "`GET /registries/3`, which returns `200` when the endpoint is saved."
+        explanation: "Not correct. This call reads the saved record. It does not contact the remote registry."
+      - id: b
+        text: "`POST /replication/executions` with the endpoint id."
+        explanation: "Not correct. This call starts a rule. It expects a rule id, not an endpoint id."
+      - id: c
+        text: "`GET /replication/adapters`, which lists the reachable registries."
+        explanation: "Not correct. This call lists the provider names Harbor was built with. It does not test a registry."
+      - id: d
+        text: "`POST /registries/ping` with the body `{\"id\":3}`, which returns `200` when the registry answers."
+        explanation: "Correct. This is the same check as the Test Connection button in the web portal."
+    correct_option: d
+    explanation: "Correct. This is the same check as the Test Connection button in the web portal."
+
+  - id: ats103-010-q05
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Tell push-based and pull-based replication apart"
+    source_readings:
+      - sections/section-010/module-01/course-02-replication-rules-and-filters.md
+    prompt: "In a pull-based replication rule, which side is the source of the copy?"
+    options:
+      - id: a
+        text: "The registry endpoint. Harbor copies its artifacts into a Harbor project."
+        explanation: "Correct. A pull rule brings an endpoint's artifacts into Harbor."
+      - id: b
+        text: "The Harbor project. Harbor copies its artifacts out to the endpoint."
+        explanation: "Not correct. That describes a push-based rule."
+      - id: c
+        text: "The `jobservice` component, which holds the artifacts during the copy."
+        explanation: "Not correct. `jobservice` runs the job. It is not a source of artifacts."
+      - id: d
+        text: "Both sides. A rule copies in both directions at the same time."
+        explanation: "Not correct. A rule copies in one direction only."
+    correct_option: a
+    explanation: "Correct. A pull rule brings an endpoint's artifacts into Harbor."
+
+  - id: ats103-010-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use the name filter pattern language"
+    source_readings:
+      - sections/section-010/module-01/course-02-replication-rules-and-filters.md
+    prompt: "A rule has the name filter `inventory/*`. Which repository does it match?"
+    options:
+      - id: a
+        text: "`inventory/tools/podinfo`, but not `inventory/podinfo`."
+        explanation: "Not correct. `*` matches one level. It does not match a name with a further `/`."
+      - id: b
+        text: "`inventory/podinfo`, but not `inventory/tools/podinfo`."
+        explanation: "Correct. `*` matches any characters except `/`, so it stops at one path level."
+      - id: c
+        text: "Both `inventory/podinfo` and `inventory/tools/podinfo`."
+        explanation: "Not correct. Matching both needs `inventory/**`. `*` does not cross a `/`."
+      - id: d
+        text: "Only `podinfo`, in any project."
+        explanation: "Not correct. The name filter matches the whole repository name, including the project."
+    correct_option: b
+    explanation: "Correct. `*` matches any characters except `/`, so it stops at one path level."
+
+  - id: ats103-010-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Predict the destination path with flattening"
+    source_readings:
+      - sections/section-010/module-01/course-02-replication-rules-and-filters.md
+    prompt: "The source repository is `a/b/c/d` and the destination namespace is `ns`. The rule flattens one level. What is the destination path?"
+    options:
+      - id: a
+        text: "`ns/a/b/c/d`"
+        explanation: "Not correct. That is the result with no flattening."
+      - id: b
+        text: "`ns/c/d`"
+        explanation: "Not correct. That is the result when two levels are flattened."
+      - id: c
+        text: "`ns/b/c/d`"
+        explanation: "Correct. One leading level, `a`, is replaced by the namespace."
+      - id: d
+        text: "`ns/d`"
+        explanation: "Not correct. That is the result when all levels are flattened."
+    correct_option: c
+    explanation: "Correct. One leading level, `a`, is replaced by the namespace."
+
+  - id: ats103-010-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose the trigger that copies deletions"
+    source_readings:
+      - sections/section-010/module-01/course-03-triggers-executions-and-logs.md
+    prompt: "Which rule setup removes an artifact at the endpoint when someone deletes it in Harbor?"
+    options:
+      - id: a
+        text: "A scheduled trigger with delete replication turned on."
+        explanation: "Not correct. A scheduled rule does not copy deletions."
+      - id: b
+        text: "A manual trigger started right after the deletion."
+        explanation: "Not correct. A manual run copies what exists now. It does not copy deletions."
+      - id: c
+        text: "Any trigger, because Harbor always copies deletions."
+        explanation: "Not correct. Harbor copies deletions only for an event-based rule with the setting turned on."
+      - id: d
+        text: "An event-based trigger with delete replication turned on."
+        explanation: "Correct. Delete replication works only with the event-based trigger."
+    correct_option: d
+    explanation: "Correct. Delete replication works only with the event-based trigger."
+
+  - id: ats103-010-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Read an execution that copied nothing"
+    source_readings:
+      - sections/section-010/module-01/course-03-triggers-executions-and-logs.md
+    prompt: "An execution has the status `Succeeded`, but the mirror has no new tag. What does this most likely mean?"
+    options:
+      - id: a
+        text: "The filters matched no artifact, so the execution had zero tasks."
+        explanation: "Correct. An execution can succeed with zero tasks. Look at the task list."
+      - id: b
+        text: "The mirror is full and silently dropped the copy."
+        explanation: "Not correct. A failed copy shows as a failed task, not as a successful execution."
+      - id: c
+        text: "The rule is still running and the status is not final."
+        explanation: "Not correct. A running execution has the status `InProgress`, not `Succeeded`."
+      - id: d
+        text: "The endpoint credentials expired."
+        explanation: "Not correct. Expired credentials make tasks fail. They do not give a successful execution."
+    correct_option: a
+    explanation: "Correct. An execution can succeed with zero tasks. Look at the task list."
+
+  - id: ats103-010-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Find the error of a failed copy"
+    source_readings:
+      - sections/section-010/module-01/course-03-triggers-executions-and-logs.md
+    prompt: "An artifact did not arrive at the mirror. Where do you find the error the remote registry returned?"
+    options:
+      - id: a
+        text: "In the endpoint record, in the field `description`."
+        explanation: "Not correct. The endpoint record does not store errors of copy jobs."
+      - id: b
+        text: "In the log of the failed task, under the execution of the rule."
+        explanation: "Correct. `jobservice` writes the error of each copy to the task log."
+      - id: c
+        text: "In the filters of the rule."
+        explanation: "Not correct. Filters only select artifacts. They do not hold errors."
+      - id: d
+        text: "In the Harbor project's tag retention policy."
+        explanation: "Not correct. Retention deletes tags. It does not log replication errors."
+    correct_option: b
+    explanation: "Correct. `jobservice` writes the error of each copy to the task log."

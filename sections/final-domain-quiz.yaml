@@ -1,0 +1,222 @@
+# Final domain knowledge check across all three sections.
+schema_version: 1
+kind: question_bank
+id: ats103-final
+course_id: ATS103
+exam_code: HARBOR
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: domain
+  id: replication-p2p-remote-registries
+  title: "Replication, P2P Preheating & Remote Registries"
+placement:
+  position: after
+  reading: sections/section-030/capstone/labs/lab-01/question.md
+questions:
+  - id: ats103-final-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Choose the right provider for an endpoint"
+    source_readings:
+      - sections/section-010/module-01/course-01-registry-endpoints-and-providers.md
+    prompt: "You register a plain CNCF Distribution registry as an endpoint with the provider `harbor`. The URL is correct. What happens?"
+    options:
+      - id: a
+        text: "The endpoint works, because the URL alone decides how Harbor connects."
+        explanation: "Not correct. The URL is not enough. Each provider is a separate adapter with its own API calls."
+      - id: b
+        text: "The endpoint fails, because Harbor speaks the Harbor API to a registry that does not offer it."
+        explanation: "Correct. The provider decides which API Harbor uses, so the right URL with the wrong provider still fails."
+      - id: c
+        text: "Harbor detects the real registry type and switches the provider itself."
+        explanation: "Not correct. Harbor does not detect the type. You must choose the provider."
+      - id: d
+        text: "The endpoint works, but only for pull-based rules."
+        explanation: "Not correct. The provider mismatch breaks both push and pull rules."
+    correct_option: b
+    explanation: "Correct. The provider decides which API Harbor uses, so the right URL with the wrong provider still fails."
+
+  - id: ats103-final-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose the trigger that copies deletions"
+    source_readings:
+      - sections/section-010/module-01/course-03-triggers-executions-and-logs.md
+    prompt: "Which rule setup removes an artifact at the endpoint when someone deletes it in Harbor?"
+    options:
+      - id: a
+        text: "A scheduled trigger with delete replication turned on."
+        explanation: "Not correct. A scheduled rule does not copy deletions."
+      - id: b
+        text: "A manual trigger started right after the deletion."
+        explanation: "Not correct. A manual run copies what exists now. It does not copy deletions."
+      - id: c
+        text: "An event-based trigger with delete replication turned on."
+        explanation: "Correct. Delete replication works only with the event-based trigger."
+      - id: d
+        text: "Any trigger, because Harbor always copies deletions."
+        explanation: "Not correct. Harbor copies deletions only for an event-based rule with the setting turned on."
+    correct_option: c
+    explanation: "Correct. Delete replication works only with the event-based trigger."
+
+  - id: ats103-final-q03
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Read an execution that copied nothing"
+    source_readings:
+      - sections/section-010/module-01/course-03-triggers-executions-and-logs.md
+    prompt: "An execution has the status `Succeeded`, but the mirror has no new tag. What does this most likely mean?"
+    options:
+      - id: a
+        text: "The mirror is full and silently dropped the copy."
+        explanation: "Not correct. A failed copy shows as a failed task, not as a successful execution."
+      - id: b
+        text: "The rule is still running and the status is not final."
+        explanation: "Not correct. A running execution has the status `InProgress`, not `Succeeded`."
+      - id: c
+        text: "The endpoint credentials expired."
+        explanation: "Not correct. Expired credentials make tasks fail. They do not give a successful execution."
+      - id: d
+        text: "The filters matched no artifact, so the execution had zero tasks."
+        explanation: "Correct. An execution can succeed with zero tasks. Look at the task list."
+    correct_option: d
+    explanation: "Correct. An execution can succeed with zero tasks. Look at the task list."
+
+  - id: ats103-final-q04
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain the rate limit problem"
+    source_readings:
+      - sections/section-020/module-01/course-01-why-cache-a-remote-registry.md
+    prompt: "Many nodes behind one network address pull images straight from Docker Hub. Which problem can stop all of the pulls?"
+    options:
+      - id: a
+        text: "The anonymous rate limit, which the nodes share because they use the same address."
+        explanation: "Correct. When the limit is used up, every pull fails until the window moves on."
+      - id: b
+        text: "Docker Hub allows only one pull at a time per cluster."
+        explanation: "Not correct. Docker Hub limits pulls per time window, not the number of simultaneous pulls."
+      - id: c
+        text: "Docker Hub refuses official images such as `alpine` without a login."
+        explanation: "Not correct. Official images can be pulled anonymously, within the rate limit."
+      - id: d
+        text: "Docker Hub allows each image to be pulled only once per day."
+        explanation: "Not correct. The limit counts pulls per address in a time window. It does not limit one image."
+    correct_option: a
+    explanation: "Correct. When the limit is used up, every pull fails until the window moves on."
+
+  - id: ats103-final-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Write the pull path through a proxy cache"
+    source_readings:
+      - sections/section-020/module-01/course-02-creating-a-proxy-cache-project.md
+    prompt: "The proxy cache project is `dockerhub-proxy`. Which path pulls the official image `alpine:3.22` through Harbor?"
+    options:
+      - id: a
+        text: "`harbor.localtest.me:8443/dockerhub-proxy/alpine:3.22`"
+        explanation: "Not correct. This asks Docker Hub for `alpine` outside `library`, which does not exist."
+      - id: b
+        text: "`harbor.localtest.me:8443/dockerhub-proxy/library/alpine:3.22`"
+        explanation: "Correct. Official images live under the namespace `library` at Docker Hub, and the path must say so."
+      - id: c
+        text: "`harbor.localtest.me:8443/library/dockerhub-proxy/alpine:3.22`"
+        explanation: "Not correct. The project name comes first after the address. `library` belongs after it."
+      - id: d
+        text: "`harbor.localtest.me:8443/library/alpine:3.22`"
+        explanation: "Not correct. This is the default project `library` in Harbor. It is not the proxy cache."
+    correct_option: b
+    explanation: "Correct. Official images live under the namespace `library` at Docker Hub, and the path must say so."
+
+  - id: ats103-final-q06
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know that a proxy cache refuses pushes"
+    source_readings:
+      - sections/section-020/module-01/course-03-cache-behaviour-and-retention.md
+    prompt: "What happens when an administrator pushes an image into a proxy cache project?"
+    options:
+      - id: a
+        text: "Harbor accepts the push and uploads the image to Docker Hub."
+        explanation: "Not correct. Harbor never pushes to the upstream registry from a cache project."
+      - id: b
+        text: "Harbor accepts the push and keeps the image in the cache."
+        explanation: "Not correct. Pushes into a proxy cache project are refused, even for the administrator."
+      - id: c
+        text: "Harbor refuses the push. The cache holds only what the upstream registry serves."
+        explanation: "Correct. Own images belong in normal projects."
+      - id: d
+        text: "Harbor accepts the push only when the project is private."
+        explanation: "Not correct. Public or private does not change this. Pushes are refused."
+    correct_option: c
+    explanation: "Correct. Own images belong in normal projects."
+
+  - id: ats103-final-q07
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know which Dragonfly part Harbor talks to"
+    source_readings:
+      - sections/section-030/module-01/course-01-p2p-distribution-and-dragonfly.md
+    prompt: "Which Dragonfly part receives the preheat requests from Harbor?"
+    options:
+      - id: a
+        text: "The scheduler, which decides which peers fetch each piece."
+        explanation: "Not correct. Harbor does not talk to the scheduler."
+      - id: b
+        text: "The seed peer, which downloads from the registry first."
+        explanation: "Not correct. Harbor does not talk to a seed peer."
+      - id: c
+        text: "The `dfdaemon` peer on each node."
+        explanation: "Not correct. Peers on the nodes fetch pieces. They do not accept preheat requests from Harbor."
+      - id: d
+        text: "The manager, at its REST address on port `8080`."
+        explanation: "Correct. Harbor talks only to the manager. Everything after that happens inside Dragonfly."
+    correct_option: d
+    explanation: "Correct. Harbor talks only to the manager. Everything after that happens inside Dragonfly."
+
+  - id: ats103-final-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose the auth mode for Dragonfly"
+    source_readings:
+      - sections/section-030/module-01/course-02-registering-a-provider-instance.md
+    prompt: "Dragonfly's documentation for Harbor sets the instance auth mode to which value?"
+    options:
+      - id: a
+        text: "`OAUTH`, with a Dragonfly personal access token."
+        explanation: "Correct. The token allows calls to the manager's preheat API."
+      - id: b
+        text: "`NONE`, because the manager is inside the cluster."
+        explanation: "Not correct. `NONE` works in the playground, but a real installation uses a token."
+      - id: c
+        text: "`BASIC`, with the Harbor administrator password."
+        explanation: "Not correct. The manager does not use Harbor's password."
+      - id: d
+        text: "`OAUTH`, with a Harbor robot account token."
+        explanation: "Not correct. The token comes from the Dragonfly console, not from Harbor."
+    correct_option: a
+    explanation: "Correct. The token allows calls to the manager's preheat API."
+
+  - id: ats103-final-q09
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Write a tag filter that selects releases"
+    source_readings:
+      - sections/section-030/module-01/course-03-preheat-policies.md
+    prompt: "A preheat policy must select only release tags such as `v1.2.0`. Which tag filter does this?"
+    options:
+      - id: a
+        text: "`*`"
+        explanation: "Not correct. This selects every tag, including development builds."
+      - id: b
+        text: "`v*`"
+        explanation: "Correct. It selects tags that start with `v` and keeps development builds out."
+      - id: c
+        text: "`**`"
+        explanation: "Not correct. This selects every tag as well."
+      - id: d
+        text: "`v?`"
+        explanation: "Not correct. `?` matches one character, so this matches only tags like `v1`."
+    correct_option: b
+    explanation: "Correct. It selects tags that start with `v` and keeps development builds out."

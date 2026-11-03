@@ -1,0 +1,245 @@
+# Knowledge check for section 030. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats103-030
+course_id: ATS103
+exam_code: HARBOR
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: section
+  id: section-030
+  title: "P2P Preheating With Dragonfly"
+placement:
+  position: after
+  reading: sections/section-030/capstone/labs/lab-01/question.md
+questions:
+  - id: ats103-030-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know which Dragonfly part Harbor talks to"
+    source_readings:
+      - sections/section-030/module-01/course-01-p2p-distribution-and-dragonfly.md
+    prompt: "Which Dragonfly part receives the preheat requests from Harbor?"
+    options:
+      - id: a
+        text: "The manager, at its REST address on port `8080`."
+        explanation: "Correct. Harbor talks only to the manager. Everything after that happens inside Dragonfly."
+      - id: b
+        text: "The scheduler, which decides which peers fetch each piece."
+        explanation: "Not correct. Harbor does not talk to the scheduler."
+      - id: c
+        text: "The seed peer, which downloads from the registry first."
+        explanation: "Not correct. Harbor does not talk to a seed peer."
+      - id: d
+        text: "The `dfdaemon` peer on each node."
+        explanation: "Not correct. Peers on the nodes fetch pieces. They do not accept preheat requests from Harbor."
+    correct_option: a
+    explanation: "Correct. Harbor talks only to the manager. Everything after that happens inside Dragonfly."
+
+  - id: ats103-030-q02
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain the role of a seed peer"
+    source_readings:
+      - sections/section-030/module-01/course-01-p2p-distribution-and-dragonfly.md
+    prompt: "What does a seed peer do in a preheat?"
+    options:
+      - id: a
+        text: "It decides which peers a node fetches each piece from."
+        explanation: "Not correct. That is the job of the scheduler."
+      - id: b
+        text: "It downloads the image from the registry first, so other peers can fetch the pieces from it."
+        explanation: "Correct. Preheating sends images to the seed peers."
+      - id: c
+        text: "It stores the configuration of the Dragonfly clusters."
+        explanation: "Not correct. That is the job of the manager."
+      - id: d
+        text: "It runs on each node and pulls images for the container runtime."
+        explanation: "Not correct. That describes a peer (`dfdaemon`)."
+    correct_option: b
+    explanation: "Correct. Preheating sends images to the seed peers."
+
+  - id: ats103-030-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain what preheating adds to P2P distribution"
+    source_readings:
+      - sections/section-030/module-01/course-01-p2p-distribution-and-dragonfly.md
+    prompt: "What does preheating add to P2P distribution?"
+    options:
+      - id: a
+        text: "It splits each layer into pieces so that nodes can share them."
+        explanation: "Not correct. That is P2P distribution itself. Preheating adds fetching in advance."
+      - id: b
+        text: "It removes old images from the registry."
+        explanation: "Not correct. Preheating does not delete anything."
+      - id: c
+        text: "The P2P engine fetches an image as soon as it is released, so the pieces are ready before the rollout starts."
+        explanation: "Correct. Preheating removes the wait for the first node to ask."
+      - id: d
+        text: "It signs each image before a node pulls it."
+        explanation: "Not correct. Preheating does not sign images."
+    correct_option: c
+    explanation: "Correct. Preheating removes the wait for the first node to ask."
+
+  - id: ats103-030-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know when preheating helps nodes"
+    source_readings:
+      - sections/section-030/module-01/course-01-p2p-distribution-and-dragonfly.md
+    prompt: "The nodes in a cluster pull images with their normal container runtime, without a Dragonfly peer. What does preheating do for them?"
+    options:
+      - id: a
+        text: "It makes node pulls faster, because the image is cached in Harbor."
+        explanation: "Not correct. Harbor already holds the image. The gain comes from peers fetching pieces."
+      - id: b
+        text: "It copies the image to the disk of every node."
+        explanation: "Not correct. Preheating sends the image to the seed peers, not to node disks."
+      - id: c
+        text: "It makes the nodes pull from the manager."
+        explanation: "Not correct. The manager does not serve images."
+      - id: d
+        text: "Nothing. Preheating fills the seed peers, and nodes benefit only when they pull through a Dragonfly peer."
+        explanation: "Correct. The container runtime must pull through a peer."
+    correct_option: d
+    explanation: "Correct. The container runtime must pull through a peer."
+
+  - id: ats103-030-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose the auth mode for Dragonfly"
+    source_readings:
+      - sections/section-030/module-01/course-02-registering-a-provider-instance.md
+    prompt: "Dragonfly's documentation for Harbor sets the instance auth mode to which value?"
+    options:
+      - id: a
+        text: "`OAUTH`, with a Dragonfly personal access token."
+        explanation: "Correct. The token allows calls to the manager's preheat API."
+      - id: b
+        text: "`NONE`, because the manager is inside the cluster."
+        explanation: "Not correct. `NONE` works in the playground, but a real installation uses a token."
+      - id: c
+        text: "`BASIC`, with the Harbor administrator password."
+        explanation: "Not correct. The manager does not use Harbor's password."
+      - id: d
+        text: "`OAUTH`, with a Harbor robot account token."
+        explanation: "Not correct. The token comes from the Dragonfly console, not from Harbor."
+    correct_option: a
+    explanation: "Correct. The token allows calls to the manager's preheat API."
+
+  - id: ats103-030-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the Healthy status of an instance"
+    source_readings:
+      - sections/section-030/module-01/course-02-registering-a-provider-instance.md
+    prompt: "The instance shows the status Healthy in the web portal. What does this prove?"
+    options:
+      - id: a
+        text: "A preheat of any image will succeed."
+        explanation: "Not correct. Health proves only the connection to the manager."
+      - id: b
+        text: "Harbor's `core` component can reach the Dragonfly manager."
+        explanation: "Correct. A preheat also needs a valid token and a seed peer that can pull from Harbor."
+      - id: c
+        text: "The seed peers trust Harbor's certificate."
+        explanation: "Not correct. Health does not check the seed peers."
+      - id: d
+        text: "The token of the instance is valid for preheat calls."
+        explanation: "Not correct. The ping does not prove the token. A preheat can still fail."
+    correct_option: b
+    explanation: "Correct. A preheat also needs a valid token and a seed peer that can pull from Harbor."
+
+  - id: ats103-030-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know the effect of a disabled instance"
+    source_readings:
+      - sections/section-030/module-01/course-02-registering-a-provider-instance.md
+    prompt: "An instance is healthy but not enabled. Can a preheat policy use it?"
+    options:
+      - id: a
+        text: "Yes. Health is the only condition."
+        explanation: "Not correct. The `Enable` field must be set as well."
+      - id: b
+        text: "Yes, but only a manual policy."
+        explanation: "Not correct. The trigger does not change this rule."
+      - id: c
+        text: "No. Policies cannot use an instance that is not enabled."
+        explanation: "Correct. Enable the instance first."
+      - id: d
+        text: "Yes, but only in the project that created it."
+        explanation: "Not correct. Instances belong to the system, and every project can use enabled ones."
+    correct_option: c
+    explanation: "Correct. Enable the instance first."
+
+  - id: ats103-030-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Write a tag filter that selects releases"
+    source_readings:
+      - sections/section-030/module-01/course-03-preheat-policies.md
+    prompt: "A preheat policy must select only release tags such as `v1.2.0`. Which tag filter does this?"
+    options:
+      - id: a
+        text: "`*`"
+        explanation: "Not correct. This selects every tag, including development builds."
+      - id: b
+        text: "`**`"
+        explanation: "Not correct. This selects every tag as well."
+      - id: c
+        text: "`v?`"
+        explanation: "Not correct. `?` matches one character, so this matches only tags like `v1`."
+      - id: d
+        text: "`v*`"
+        explanation: "Correct. It selects tags that start with `v` and keeps development builds out."
+    correct_option: d
+    explanation: "Correct. It selects tags that start with `v` and keeps development builds out."
+
+  - id: ats103-030-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Send filters and trigger in the API"
+    source_readings:
+      - sections/section-030/module-01/course-03-preheat-policies.md
+    prompt: "You create a preheat policy with the REST API. How does the API expect the `filters` and `trigger` fields?"
+    options:
+      - id: a
+        text: "As JSON strings, that is, JSON written as text with escaped quotes."
+        explanation: "Correct. A plain JSON object is refused."
+      - id: b
+        text: "As JSON objects, like the other fields."
+        explanation: "Not correct. The API refuses a plain object for these two fields."
+      - id: c
+        text: "As a comma-separated list of names."
+        explanation: "Not correct. The fields hold JSON text, not a name list."
+      - id: d
+        text: "As YAML text."
+        explanation: "Not correct. The fields hold JSON text, not YAML."
+    correct_option: a
+    explanation: "Correct. A plain JSON object is refused."
+
+  - id: ats103-030-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Read a failed preheat execution in the playground"
+    source_readings:
+      - sections/section-030/module-01/course-03-preheat-policies.md
+    prompt: "A preheat execution in the playground does not end with `Success`. What is the first step to find the cause?"
+    options:
+      - id: a
+        text: "Delete the policy and create it again."
+        explanation: "Not correct. The policy is not the cause, so recreating it changes nothing."
+      - id: b
+        text: "Read the task log. The playground has no token and the seed peer does not trust Harbor's certificate, so the failure is on the Dragonfly side."
+        explanation: "Correct. The log names the error Dragonfly returned."
+      - id: c
+        text: "Change the tag filter to `**`."
+        explanation: "Not correct. A wider filter selects more artifacts. It does not fix the failure."
+      - id: d
+        text: "Change the trigger to manual."
+        explanation: "Not correct. The trigger decides when a run starts, not whether it succeeds."
+    correct_option: b
+    explanation: "Correct. The log names the error Dragonfly returned."

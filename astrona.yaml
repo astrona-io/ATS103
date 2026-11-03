@@ -125,6 +125,10 @@ modules:
             url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/create-replication-rules/
           - name: "Creating replication endpoints"
             url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/create-replication-endpoints/
+      - type: quiz
+        title: "Knowledge Check: Registry Endpoints And Replication"
+        path: sections/section-010/quiz.yaml
+        pass_score: 70
 
   - id: module-020
     title: "Proxy Cache Projects"
@@ -195,6 +199,10 @@ modules:
             url: https://goharbor.io/docs/2.15.0/administration/configure-proxy-cache/
           - name: "Creating replication endpoints"
             url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/create-replication-endpoints/
+      - type: quiz
+        title: "Knowledge Check: Proxy Cache Projects"
+        path: sections/section-020/quiz.yaml
+        pass_score: 70
 
   - id: module-030
     title: "P2P Preheating With Dragonfly"
@@ -268,3 +276,11 @@ modules:
             url: https://goharbor.io/docs/2.15.0/administration/p2p-preheat/manage-preheat-providers/
           - name: "P2P preheat"
             url: https://goharbor.io/docs/2.15.0/administration/p2p-preheat/
+      - type: quiz
+        title: "Knowledge Check: P2P Preheating With Dragonfly"
+        path: sections/section-030/quiz.yaml
+        pass_score: 70
+      - type: quiz
+        title: "Final Domain Quiz"
+        path: sections/final-domain-quiz.yaml
+        pass_score: 70
