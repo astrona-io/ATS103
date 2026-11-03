@@ -17,7 +17,7 @@ contains:
 - **Modules** — a reading chapter split into a short landing page, ordered
   deep-dive parts and a summary page, a throwaway **playground** to explore in,
   and a graded **lab** placed right after the part it tests.
-- **A capstone** — one larger graded lab combining that section's module into a
+- **A capstone** — one larger graded lab combining that section's modules into a
   single scenario with several independent faults.
 
 ---
@@ -26,9 +26,9 @@ contains:
 
 | Section | Title | Modules | Labs | Topic |
 | --- | --- | --- | --- | --- |
-| [010](sections/section-010) | Registry Endpoints And Replication | 1 | 1 + capstone | Replication |
-| [020](sections/section-020) | Proxy Cache Projects | 1 | 1 + capstone | Remote registries |
-| [030](sections/section-030) | P2P Preheating With Dragonfly | 1 | 1 + capstone | P2P preheating |
+| [010](sections/section-010) | Registry Endpoints And Replication | 2 | 2 + capstone | Replication |
+| [020](sections/section-020) | Proxy Cache Projects | 2 | 2 + capstone | Remote registries |
+| [030](sections/section-030) | P2P Preheating With Dragonfly | 2 | 2 + capstone | P2P preheating |
 
 The order follows the direction an artifact travels. Section 010 sends
 artifacts out of Harbor to another registry. Section 020 brings artifacts into
@@ -41,9 +41,12 @@ nodes that will run them, through a peer-to-peer engine.
 
 | Module | Reader | Parts | Labs |
 | --- | --- | --- | --- |
-| 010-01 | [Replicate Artifacts Between Registries](sections/section-010/module-01/course.md) | 3 | [lab-01](sections/section-010/module-01/labs/lab-01) |
-| 020-01 | [Cache Docker Hub With A Proxy Cache Project](sections/section-020/module-01/course.md) | 3 | [lab-01](sections/section-020/module-01/labs/lab-01) |
-| 030-01 | [Preheat Images Into Dragonfly](sections/section-030/module-01/course.md) | 3 | [lab-01](sections/section-030/module-01/labs/lab-01) |
+| 010-01 | [Replicate Artifacts Between Registries](sections/section-010/module-01/course.md) | 4 | [lab-01](sections/section-010/module-01/labs/lab-01) |
+| 010-02 | [Pull Vendor Images On A Schedule](sections/section-010/module-02/course.md) | 4 | [lab-01](sections/section-010/module-02/labs/lab-01) |
+| 020-01 | [Cache Docker Hub With A Proxy Cache Project](sections/section-020/module-01/course.md) | 4 | [lab-01](sections/section-020/module-01/labs/lab-01) |
+| 020-02 | [Run A Proxy Cache Project For A Team](sections/section-020/module-02/course.md) | 4 | [lab-01](sections/section-020/module-02/labs/lab-01) |
+| 030-01 | [Preheat Images Into Dragonfly](sections/section-030/module-01/course.md) | 4 | [lab-01](sections/section-030/module-01/labs/lab-01) |
+| 030-02 | [Preheat Policies In Depth](sections/section-030/module-02/course.md) | 4 | [lab-01](sections/section-030/module-02/labs/lab-01) |
 
 ---
 

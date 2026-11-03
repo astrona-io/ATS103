@@ -1,0 +1,245 @@
+# Knowledge check for Preheat Policies In Depth. Listed in astrona.yaml as a `type: quiz` entry after the module's lab.
+schema_version: 1
+kind: question_bank
+id: ats103-030-02
+course_id: ATS103
+exam_code: HARBOR
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: module
+  id: module-030-02
+  title: "Preheat Policies In Depth"
+placement:
+  position: after
+  reading: sections/section-030/module-02/course-05-summary.md
+questions:
+  - id: ats103-030-02-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Choose a trigger for a batch release"
+    source_readings:
+      - sections/section-030/module-02/course-01-triggers-and-manual-runs.md
+    prompt: "A team releases ten images every evening and wants one preheat run per night. Which trigger fits?"
+    options:
+      - id: a
+        text: "Scheduled."
+        explanation: "Correct. A scheduled policy runs once and sends everything that matches at that moment."
+      - id: b
+        text: "Event based."
+        explanation: "Not correct. It creates one execution per matching push, so ten pushes make ten executions."
+      - id: c
+        text: "Manual."
+        explanation: "Not correct. Nobody would start it every night."
+      - id: d
+        text: "None. Preheating needs no trigger."
+        explanation: "Not correct. Every policy has a trigger."
+    correct_option: a
+    explanation: "Correct. A scheduled policy runs once and sends everything that matches at that moment."
+
+  - id: ats103-030-02-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Write a Harbor cron expression"
+    source_readings:
+      - sections/section-030/module-02/course-01-triggers-and-manual-runs.md
+    prompt: "Which expression runs a preheat policy every day at 02:00 in Harbor?"
+    options:
+      - id: a
+        text: "`0 2 * * *`"
+        explanation: "Not correct. This has five fields, so Harbor reads the first as seconds."
+      - id: b
+        text: "`0 0 2 * * *`"
+        explanation: "Correct. Harbor's cron has six fields with the seconds first."
+      - id: c
+        text: "`2 0 0 * * *`"
+        explanation: "Not correct. This runs at 00:00:02, two seconds after midnight."
+      - id: d
+        text: "`0 0 0 2 * *`"
+        explanation: "Not correct. This runs on the second day of every month."
+    correct_option: b
+    explanation: "Correct. Harbor's cron has six fields with the seconds first."
+
+  - id: ats103-030-02-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know how to test a policy"
+    source_readings:
+      - sections/section-030/module-02/course-01-triggers-and-manual-runs.md
+    prompt: "How do you test a scheduled policy before its first night?"
+    options:
+      - id: a
+        text: "Change its trigger to event based and back."
+        explanation: "Not correct. This is not needed and changes the policy."
+      - id: b
+        text: "Wait for the first night."
+        explanation: "Not correct. Nobody is watching then."
+      - id: c
+        text: "Start it by hand through the executions endpoint."
+        explanation: "Correct. Any policy can be started manually, whatever its trigger."
+      - id: d
+        text: "Delete it and create it again."
+        explanation: "Not correct. Recreating a policy does not run it."
+    correct_option: c
+    explanation: "Correct. Any policy can be started manually, whatever its trigger."
+
+  - id: ats103-030-02-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Name the preheat trigger field"
+    source_readings:
+      - sections/section-030/module-02/course-01-triggers-and-manual-runs.md
+    prompt: "What is the name of the field that holds the cron in a preheat policy's trigger?"
+    options:
+      - id: a
+        text: "`trigger_settings`, plural."
+        explanation: "Not correct. That is the replication field."
+      - id: b
+        text: "`schedule`."
+        explanation: "Not correct. The preheat trigger has no such field."
+      - id: c
+        text: "`cron`, at the top level of the policy."
+        explanation: "Not correct. The cron is inside the trigger, which is itself a JSON string."
+      - id: d
+        text: "`trigger_setting`, singular."
+        explanation: "Correct. The replication API uses `trigger_settings`, plural."
+    correct_option: d
+    explanation: "Correct. The replication API uses `trigger_settings`, plural."
+
+  - id: ats103-030-02-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Match a tag filter"
+    source_readings:
+      - sections/section-030/module-02/course-02-selecting-artifacts-criteria-and-scope.md
+    prompt: "The tag filter is `v*`. Which tag does it select?"
+    options:
+      - id: a
+        text: "`v1.0.0`"
+        explanation: "Correct. The tag starts with `v`."
+      - id: b
+        text: "`6.15.0`"
+        explanation: "Not correct. This tag does not start with `v`."
+      - id: c
+        text: "`main-v1`"
+        explanation: "Not correct. The tag filter must match the whole tag, and this one starts with `m`."
+      - id: d
+        text: "`release/v1`"
+        explanation: "Not correct. This does not start with `v`."
+    correct_option: a
+    explanation: "Correct. The tag starts with `v`."
+
+  - id: ats103-030-02-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Explain the criteria"
+    source_readings:
+      - sections/section-030/module-02/course-02-selecting-artifacts-criteria-and-scope.md
+    prompt: "What do the criteria of a preheat policy do?"
+    options:
+      - id: a
+        text: "They choose which Dragonfly peers receive the image."
+        explanation: "Not correct. That is the scope."
+      - id: b
+        text: "They add conditions on the artifact, such as being signed or free of severe vulnerabilities."
+        explanation: "Correct. An artifact that fails a criterion is left out."
+      - id: c
+        text: "They set when the policy runs."
+        explanation: "Not correct. That is the trigger."
+      - id: d
+        text: "They choose the repository to preheat."
+        explanation: "Not correct. That is the repository filter."
+    correct_option: b
+    explanation: "Correct. An artifact that fails a criterion is left out."
+
+  - id: ats103-030-02-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Choose a scope"
+    source_readings:
+      - sections/section-030/module-02/course-02-selecting-artifacts-criteria-and-scope.md
+    prompt: "Which scope sends the image to one seed peer only?"
+    options:
+      - id: a
+        text: "All seed peers."
+        explanation: "Not correct. It sends the image to every seed peer."
+      - id: b
+        text: "All peers."
+        explanation: "Not correct. It sends the image to every peer, including the ones on the nodes."
+      - id: c
+        text: "Single seed peer."
+        explanation: "Correct. The other peers then fetch the image from that seed peer when they need it."
+      - id: d
+        text: "No scope. The manager picks."
+        explanation: "Not correct. The scope is a setting of the policy."
+    correct_option: c
+    explanation: "Correct. The other peers then fetch the image from that seed peer when they need it."
+
+  - id: ats103-030-02-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Follow the path of a preheat"
+    source_readings:
+      - sections/section-030/module-02/course-03-how-a-preheat-travels.md
+    prompt: "Which component downloads the image from Harbor during a preheat?"
+    options:
+      - id: a
+        text: "The Dragonfly manager."
+        explanation: "Not correct. The manager keeps configuration and job records, but does not download."
+      - id: b
+        text: "Harbor's job service."
+        explanation: "Not correct. It sends the request. It does not download for Dragonfly."
+      - id: c
+        text: "The container runtime on each node."
+        explanation: "Not correct. The runtime pulls later, through the peer on the node."
+      - id: d
+        text: "A seed peer."
+        explanation: "Correct. The manager and the scheduler only pass and coordinate the job."
+    correct_option: d
+    explanation: "Correct. The manager and the scheduler only pass and coordinate the job."
+
+  - id: ats103-030-02-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Find the side that failed"
+    source_readings:
+      - sections/section-030/module-02/course-04-troubleshooting-preheat.md
+    prompt: "A policy selects `v1.0.0`, but its task fails with a certificate error from the seed peer. Where is the fix?"
+    options:
+      - id: a
+        text: "On the seed peer, which must trust Harbor's certificate authority."
+        explanation: "Correct. The policy only chooses what to send."
+      - id: b
+        text: "In the policy filters."
+        explanation: "Not correct. The filters selected the right tag."
+      - id: c
+        text: "In the cron expression."
+        explanation: "Not correct. The policy ran. The task failed while downloading."
+      - id: d
+        text: "In the project's retention policy."
+        explanation: "Not correct. Retention has nothing to do with the download."
+    correct_option: a
+    explanation: "Correct. The policy only chooses what to send."
+
+  - id: ats103-030-02-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Read an execution with no tasks"
+    source_readings:
+      - sections/section-030/module-02/course-04-troubleshooting-preheat.md
+    prompt: "A manual run creates an execution with no tasks. What is the most likely cause?"
+    options:
+      - id: a
+        text: "The seed peer is offline."
+        explanation: "Not correct. Then the tasks would exist and fail."
+      - id: b
+        text: "The filters matched no artifact, for example a tag pattern nothing starts with."
+        explanation: "Correct. Check the filter against the real tags first."
+      - id: c
+        text: "The instance has the wrong port."
+        explanation: "Not correct. A wrong port makes the instance unhealthy and the tasks fail."
+      - id: d
+        text: "The policy is event based."
+        explanation: "Not correct. The trigger does not decide whether the filters match."
+    correct_option: b
+    explanation: "Correct. Check the filter against the real tags first."

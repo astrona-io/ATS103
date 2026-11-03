@@ -6,7 +6,7 @@ Harbor can do it. A **registry endpoint** is Harbor's record of another registry
 
 Keep one sentence in mind: **the endpoint says where, the rule says what and when, and the execution log says what really happened.** Most replication problems are one of those three, and the module looks at each in turn.
 
-The module has three parts. **Registry Endpoints And Providers** registers the mirror registry in Harbor and tests the connection. **Replication Rules, Filters And Flattening** writes a rule that copies chosen tags, and shows how the filters and the destination path work. **Triggers, Executions And Logs** makes the rule run on every push, and reads what each run did. A graded lab follows the third part.
+The module has four parts. **Registry Endpoints And Providers** registers the mirror registry in Harbor and tests the connection. **Replication Rules, Filters And Flattening** writes a rule that copies chosen tags, and shows how the filters and the destination path work. **Triggers, Executions And Logs** makes the rule run on every push, and reads what each run did. A graded lab follows the third part. **Endpoint Credentials And Least Privilege** closes the module with robot accounts that give an endpoint only the rights its rules need.
 
 ## Learning objectives
 
@@ -19,6 +19,7 @@ After this module you can:
 - Predict the destination path of a copy from the destination namespace and the flattening level.
 - Choose a manual, scheduled or event-based trigger, and turn on delete replication.
 - Start a rule, then read its executions, tasks and logs.
+- Create a robot account with only the permissions a rule needs, and explain why an endpoint should not use an administrator account.
 
 ## Before you start
 

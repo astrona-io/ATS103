@@ -16,7 +16,7 @@ A **proxy cache project** puts Harbor in between. Clients pull from Harbor; Harb
 
 ## The learning path
 
-The section has one module. It has a landing page, three short parts, a graded lab right after the part it tests, and a summary. The module also has its own playground, and the landing page starts it for you.
+The section has two modules. Each has a landing page, four short parts, a graded lab right after the part it tests, a summary, and a knowledge check. Each module also has its own playground, and the landing page starts it for you.
 
 ### 1. Cache Docker Hub With A Proxy Cache Project
 
@@ -25,11 +25,22 @@ The module starts at its landing page, which also launches the playground. The p
 1. Why Cache A Remote Registry
 2. Creating And Using A Proxy Cache Project, followed by the lab **Pull Docker Hub Images Through A Proxy Cache**
 3. Cache Behaviour, Retention And Limits
-4. Summary
+4. Using The Cache From Kubernetes
+5. Summary
+
+### 2. Run A Proxy Cache Project For A Team
+
+The second module runs a cache for a team: private access, a pull-only account for software, nodes that use the cache, and the records the cache keeps.
+
+1. Private Cache And Pull Accounts, followed by the lab **Serve A Private Team Cache**
+2. Pointing Kubernetes Nodes At The Cache
+3. Reading The Cache: Artifacts, Quota And Audit Logs
+4. Troubleshooting A Proxy Cache
+5. Summary
 
 ## Section capstone: Route Base Image Pulls Through The Cache
 
-The capstone is one graded scenario that combines the whole module. Someone started on a Docker Hub cache and stopped halfway: an endpoint that cannot work, a project that is not a cache, and a CI pull list that still goes straight to Docker Hub. Finish the job without changing which images CI uses. Work it after the module lab.
+The capstone is one graded scenario that combines the whole section. Someone started on a Docker Hub cache and stopped halfway: an endpoint that cannot work, a project that is not a cache, and a CI pull list that still goes straight to Docker Hub. Finish the job without changing which images CI uses. Work it after the module labs.
 
 Start the capstone:
 

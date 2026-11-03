@@ -16,7 +16,7 @@ Preheating goes one step further: the P2P engine fetches the image before any no
 
 ## The learning path
 
-The section has one module. It has a landing page, three short parts, a graded lab right after the part it tests, and a summary. The module also has its own playground, and the landing page starts it for you.
+The section has two modules. Each has a landing page, four short parts, a graded lab right after the part it tests, a summary, and a knowledge check. Each module also has its own playground, and the landing page starts it for you.
 
 ### 1. Preheat Images Into Dragonfly
 
@@ -25,11 +25,22 @@ The module starts at its landing page, which also launches the playground. The p
 1. P2P Distribution And Dragonfly
 2. Registering Dragonfly As A Provider Instance
 3. Preheat Policies, Triggers And Executions, followed by the lab **Preheat Release Tags With Dragonfly**
-4. Summary
+4. How Nodes Pull Through Dragonfly
+5. Summary
+
+### 2. Preheat Policies In Depth
+
+The second module goes deeper on policies: triggers, selection, the path of a preheat and troubleshooting. Dragonfly is the same, and the first exercise registers it.
+
+1. Triggers And Manual Runs, followed by the lab **Schedule Nightly Preheating**
+2. Selecting Artifacts, Criteria And Scope
+3. How A Preheat Travels
+4. Troubleshooting Preheat
+5. Summary
 
 ## Section capstone: Wire A Release Pipeline End To End
 
-The capstone is one graded scenario that ties replication and preheating together. Every release of `inventory/podinfo` must reach the mirror registry and be preheated into Dragonfly as soon as it is pushed. The rule, the instance and the policy all exist, and none of them does anything on a push. Work it after the module lab. Its environment runs Harbor and Dragonfly together, so give your machine about 6 GiB of memory.
+The capstone is one graded scenario that ties replication and preheating together. Every release of `inventory/podinfo` must reach the mirror registry and be preheated into Dragonfly as soon as it is pushed. The rule, the instance and the policy all exist, and none of them does anything on a push. Work it after the module labs. Its environment runs Harbor and Dragonfly together, so give your machine about 6 GiB of memory.
 
 Start the capstone:
 

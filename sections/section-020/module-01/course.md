@@ -6,7 +6,7 @@ A **proxy cache project** removes that dependency. It is a Harbor project that r
 
 Keep one sentence in mind: **clients pull from Harbor, and Harbor pulls from Docker Hub once.** Every command in this module tests where an image really came from.
 
-The module has three parts. **Why Cache A Remote Registry** explains the problem and how the cache decides what to serve. **Creating And Using A Proxy Cache Project** builds a Docker Hub cache and pulls an image through it. A graded lab follows the second part. **Cache Behaviour, Retention And Limits** looks at what the cache does over time: retention, pushes it refuses, and what it can expose.
+The module has four parts. **Why Cache A Remote Registry** explains the problem and how the cache decides what to serve. **Creating And Using A Proxy Cache Project** builds a Docker Hub cache and pulls an image through it. A graded lab follows the second part. **Cache Behaviour, Retention And Limits** looks at what the cache does over time: retention, pushes it refuses, and what it can expose. **Using The Cache From Kubernetes** shows how pods reach the cache and how to check the result from the Harbor side.
 
 ## Learning objectives
 
@@ -18,6 +18,7 @@ After this module you can:
 - Find the cached copy of an image in Harbor.
 - Predict what the cache serves when the upstream image is unchanged, changed, deleted or unreachable.
 - Read a proxy cache project's default retention policy, and explain why the project refuses pushes.
+- Write the image name a pod uses to pull through the cache, and check the pull count in Harbor.
 
 ## Before you start
 

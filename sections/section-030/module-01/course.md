@@ -6,7 +6,7 @@ A new release of `podinfo` is pushed to Harbor, and a few minutes later it rolls
 
 Keep one sentence in mind: **the instance says which engine, the policy says which artifacts and when.** It is the same split as a registry endpoint and a replication rule.
 
-The module has three parts. **P2P Distribution And Dragonfly** explains P2P distribution and preheating, and looks at the Dragonfly parts running in your playground. **Registering Dragonfly As A Provider Instance** adds Dragonfly to Harbor and checks its health. **Preheat Policies, Triggers And Executions** writes a policy that preheats every release on push. A graded lab follows the third part.
+The module has four parts. **P2P Distribution And Dragonfly** explains P2P distribution and preheating, and looks at the Dragonfly parts running in your playground. **Registering Dragonfly As A Provider Instance** adds Dragonfly to Harbor and checks its health. **Preheat Policies, Triggers And Executions** writes a policy that preheats every release on push. A graded lab follows the third part. **How Nodes Pull Through Dragonfly** shows what runs on a node and how the container runtime is sent to it.
 
 ## Learning objectives
 
@@ -17,6 +17,7 @@ After this module you can:
 - Register Dragonfly in Harbor as a P2P provider instance, choose its authentication mode, and check its health.
 - Write a preheat policy with repository and tag filters, criteria, a trigger and a scope.
 - Read a preheat policy's executions, and explain what a Dragonfly personal access token and a trusted seed peer add.
+- Describe what runs on a node, how `containerd` is pointed at it, and how to see the effect in Harbor.
 
 ## Before you start
 

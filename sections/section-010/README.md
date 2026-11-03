@@ -17,7 +17,7 @@ Harbor does this copying itself. You tell it where the other registry is with a 
 
 ## The learning path
 
-The section has one module. It has a landing page, three short parts, a graded lab right after the part it tests, and a summary. The module also has its own playground, a cluster where you can explore freely, and the landing page starts it for you.
+The section has two modules. Each has a landing page, four short parts, a graded lab right after the part it tests, a summary, and a knowledge check. Each module also has its own playground, a cluster where you can explore freely, and the landing page starts it for you.
 
 ### 1. Replicate Artifacts Between Registries
 
@@ -26,11 +26,22 @@ The module starts at its landing page, which also launches the playground. The p
 1. Registry Endpoints And Providers
 2. Replication Rules, Filters And Flattening
 3. Triggers, Executions And Logs, followed by the lab **Replicate Release Tags To A Mirror**
-4. Summary
+4. Endpoint Credentials And Least Privilege
+5. Summary
+
+### 2. Pull Vendor Images On A Schedule
+
+The second module reverses the direction. The playground holds Harbor and a supplier registry with several repositories and tags, and Harbor does not know about it yet.
+
+1. Pull-Based Replication
+2. Rule Options: Override, Speed And Resource Filters
+3. Scheduled Triggers And Manual Runs, followed by the lab **Pull Vendor Images On A Schedule**
+4. Failed Executions And How To Read Them
+5. Summary
 
 ## Section capstone: Repair A Replication Pipeline
 
-The capstone is one graded scenario that combines the whole module. A colleague set up release replication to the mirror before going on holiday. Releases have not reached the mirror since, and a release that was withdrawn in Harbor is still in the mirror. The endpoint and the rule both exist, and nothing reports an error until you look at the executions. Work it after the module lab.
+The capstone is one graded scenario that combines the whole section. A colleague set up release replication to the mirror before going on holiday. Releases have not reached the mirror since, and a release that was withdrawn in Harbor is still in the mirror. The endpoint and the rule both exist, and nothing reports an error until you look at the executions. Work it after the module labs.
 
 Start the capstone:
 

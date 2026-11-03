@@ -100,8 +100,54 @@ modules:
           - name: "Creating replication endpoints"
             url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/create-replication-endpoints/
       - type: reading
+        title: "Endpoint Credentials And Least Privilege"
+        path: sections/section-010/module-01/course-04-endpoint-credentials.md
+      - type: reading
         title: Summary
-        path: sections/section-010/module-01/course-04-summary.md
+        path: sections/section-010/module-01/course-05-summary.md
+
+      - type: reading
+        title: "Pull Vendor Images On A Schedule"
+        path: sections/section-010/module-02/course.md
+      - type: reading
+        title: "Pull-Based Replication"
+        path: sections/section-010/module-02/course-01-pull-based-replication.md
+      - type: reading
+        title: "Rule Options: Override, Speed And Resource Filters"
+        path: sections/section-010/module-02/course-02-rule-options.md
+      - type: reading
+        title: "Scheduled Triggers And Manual Runs"
+        path: sections/section-010/module-02/course-03-scheduled-triggers.md
+      - type: reading
+        title: Question
+        path: sections/section-010/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Pull Vendor Images On A Schedule Lab"
+        path: sections/section-010/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 25m
+        topic: replication
+        task_kind: build
+        tags: [pull-replication, replication-filter, flattening, scheduled-trigger, cron, harbor-api]
+        learning_goals:
+          - Write a pull rule that selects only stable tags of one repository at a supplier registry
+          - Set the destination namespace and flattening so the repository lands under the right name
+          - Run the rule on an hourly schedule and prove that it copied the right tags
+        resources:
+          - name: "Creating a replication rule"
+            url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/create-replication-rules/
+          - name: "Managing replications"
+            url: https://goharbor.io/docs/2.15.0/administration/configuring-replication/manage-replications/
+      - type: reading
+        title: "Failed Executions And How To Read Them"
+        path: sections/section-010/module-02/course-04-failed-executions.md
+      - type: reading
+        title: Summary
+        path: sections/section-010/module-02/course-05-summary.md
+      - type: quiz
+        title: "Knowledge Check: Pull Replication, Schedules And Failures"
+        path: sections/section-010/module-02/quiz.yaml
+        pass_score: 70
 
       - type: reading
         title: Question
@@ -176,8 +222,54 @@ modules:
         title: "Cache Behaviour, Retention And Limits"
         path: sections/section-020/module-01/course-03-cache-behaviour-and-retention.md
       - type: reading
+        title: "Using The Cache From Kubernetes"
+        path: sections/section-020/module-01/course-04-using-the-cache-from-kubernetes.md
+      - type: reading
         title: Summary
-        path: sections/section-020/module-01/course-04-summary.md
+        path: sections/section-020/module-01/course-05-summary.md
+
+      - type: reading
+        title: "Run A Proxy Cache Project For A Team"
+        path: sections/section-020/module-02/course.md
+      - type: reading
+        title: "Private Cache And Pull Accounts"
+        path: sections/section-020/module-02/course-01-private-cache-and-pull-accounts.md
+      - type: reading
+        title: Question
+        path: sections/section-020/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Serve A Private Team Cache Lab"
+        path: sections/section-020/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: proxy-cache
+        task_kind: build
+        tags: [proxy-cache, docker-hub, robot-account, private-project, registry-endpoint, harbor-api]
+        learning_goals:
+          - Create a private proxy cache project from an existing Docker Hub endpoint
+          - Pull an image through the cache so that Harbor holds a copy
+          - Create a robot account that can only pull from the project
+        resources:
+          - name: "Configure proxy cache"
+            url: https://goharbor.io/docs/2.15.0/administration/configure-proxy-cache/
+          - name: "Robot accounts"
+            url: https://goharbor.io/docs/2.15.0/administration/project-configuration/create-robot-accounts/
+      - type: reading
+        title: "Pointing Kubernetes Nodes At The Cache"
+        path: sections/section-020/module-02/course-02-pointing-nodes-at-the-cache.md
+      - type: reading
+        title: "Reading The Cache: Artifacts, Quota And Audit Logs"
+        path: sections/section-020/module-02/course-03-reading-the-cache.md
+      - type: reading
+        title: "Troubleshooting A Proxy Cache"
+        path: sections/section-020/module-02/course-04-troubleshooting-a-proxy-cache.md
+      - type: reading
+        title: Summary
+        path: sections/section-020/module-02/course-05-summary.md
+      - type: quiz
+        title: "Knowledge Check: Run A Proxy Cache Project For A Team"
+        path: sections/section-020/module-02/quiz.yaml
+        pass_score: 70
 
       - type: reading
         title: Question
@@ -251,8 +343,56 @@ modules:
           - name: "Dragonfly preheat and Harbor"
             url: https://d7y.io/docs/advanced-guides/open-api/preheat/
       - type: reading
+        title: "How Nodes Pull Through Dragonfly"
+        path: sections/section-030/module-01/course-04-how-nodes-pull-through-dragonfly.md
+      - type: reading
         title: Summary
-        path: sections/section-030/module-01/course-04-summary.md
+        path: sections/section-030/module-01/course-05-summary.md
+
+      - type: reading
+        title: "Preheat Policies In Depth"
+        path: sections/section-030/module-02/course.md
+      - type: reading
+        title: "Triggers And Manual Runs"
+        path: sections/section-030/module-02/course-01-triggers-and-manual-runs.md
+      - type: reading
+        title: Question
+        path: sections/section-030/module-02/labs/lab-01/question.md
+      - type: lab
+        title: "Schedule Nightly Preheating Lab"
+        path: sections/section-030/module-02/labs/lab-01
+        difficulty: intermediate
+        estimated_duration: 20m
+        topic: preheat
+        task_kind: build
+        tags: [p2p, dragonfly, preheat-policy, scheduled-trigger, cron, harbor-api]
+        learning_goals:
+          - Create a preheat policy that selects only release tags
+          - Schedule the policy for 02:00 every day with a six-field cron
+          - Start the policy by hand and find its execution
+        resources:
+          - name: "P2P preheat"
+            url: https://goharbor.io/docs/2.15.0/administration/p2p-preheat/
+          - name: "Manage preheat provider instances"
+            url: https://goharbor.io/docs/2.15.0/administration/p2p-preheat/manage-preheat-providers/
+          - name: "Dragonfly preheat and Harbor"
+            url: https://d7y.io/docs/advanced-guides/open-api/preheat/
+      - type: reading
+        title: "Selecting Artifacts, Criteria And Scope"
+        path: sections/section-030/module-02/course-02-selecting-artifacts-criteria-and-scope.md
+      - type: reading
+        title: "How A Preheat Travels"
+        path: sections/section-030/module-02/course-03-how-a-preheat-travels.md
+      - type: reading
+        title: "Troubleshooting Preheat"
+        path: sections/section-030/module-02/course-04-troubleshooting-preheat.md
+      - type: reading
+        title: Summary
+        path: sections/section-030/module-02/course-05-summary.md
+      - type: quiz
+        title: "Knowledge Check: Preheat Policies In Depth"
+        path: sections/section-030/module-02/quiz.yaml
+        pass_score: 70
 
       - type: reading
         title: Question

@@ -1,0 +1,245 @@
+# Knowledge check for Pull Replication, Schedules And Failures. Listed in astrona.yaml as a `type: quiz` entry after the module's lab.
+schema_version: 1
+kind: question_bank
+id: ats103-010-02
+course_id: ATS103
+exam_code: HARBOR
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: module
+  id: module-010-02
+  title: "Pull Replication, Schedules And Failures"
+placement:
+  position: after
+  reading: sections/section-010/module-02/course-05-summary.md
+questions:
+  - id: ats103-010-02-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Tell a pull rule from a push rule"
+    source_readings:
+      - sections/section-010/module-02/course-01-pull-based-replication.md
+    prompt: "Which field makes a replication rule a pull rule?"
+    options:
+      - id: a
+        text: "It sets `src_registry` and leaves `dest_registry` out."
+        explanation: "Correct. The endpoint is the source and a Harbor project is the destination."
+      - id: b
+        text: "It sets `dest_registry` and leaves `src_registry` out."
+        explanation: "Not correct. That describes a push rule, where the endpoint is the destination."
+      - id: c
+        text: "It has a `trigger` of type `event_based`."
+        explanation: "Not correct. The trigger says when the rule runs, not in which direction it copies."
+      - id: d
+        text: "It has the filter type `resource` set to `image`."
+        explanation: "Not correct. A resource filter selects the kind of artifact. It does not set the direction."
+    correct_option: a
+    explanation: "Correct. The endpoint is the source and a Harbor project is the destination."
+
+  - id: ats103-010-02-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Explain why a pull rule cannot be event based"
+    source_readings:
+      - sections/section-010/module-02/course-03-scheduled-triggers.md
+    prompt: "Why can a pull rule not use the event-based trigger?"
+    options:
+      - id: a
+        text: "Harbor does not support triggers on pull rules at all."
+        explanation: "Not correct. Pull rules support the manual and scheduled triggers."
+      - id: b
+        text: "Harbor sees no events at a remote registry, so it cannot know when something changed there."
+        explanation: "Correct. A pull rule is run manually or on a schedule."
+      - id: c
+        text: "Event-based rules work only for charts."
+        explanation: "Not correct. The event trigger works for the artifacts Harbor itself receives, whatever their type."
+      - id: d
+        text: "The remote registry must send a webhook, and no registry can."
+        explanation: "Not correct. Harbor does not use webhooks from the remote registry for this. It sees no events there."
+    correct_option: b
+    explanation: "Correct. A pull rule is run manually or on a schedule."
+
+  - id: ats103-010-02-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Write a Harbor cron expression"
+    source_readings:
+      - sections/section-010/module-02/course-03-scheduled-triggers.md
+    prompt: "Which cron expression runs a rule at the start of every hour in Harbor?"
+    options:
+      - id: a
+        text: "`0 * * * *`"
+        explanation: "Not correct. This is a five-field Linux expression. Harbor would read the first field as seconds."
+      - id: b
+        text: "`* 0 * * * *`"
+        explanation: "Not correct. The first field is the seconds, so this runs every second during minute 0."
+      - id: c
+        text: "`0 0 * * * *`"
+        explanation: "Correct. Harbor's cron has six fields and the first is the seconds."
+      - id: d
+        text: "`0 0 0 * * *`"
+        explanation: "Not correct. This runs once a day at midnight, not every hour."
+    correct_option: c
+    explanation: "Correct. Harbor's cron has six fields and the first is the seconds."
+
+  - id: ats103-010-02-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Work out the destination name"
+    source_readings:
+      - sections/section-010/module-02/course-01-pull-based-replication.md
+    prompt: "A pull rule uses the name filter `vendor/tools`, the destination namespace `vendored` and flattening of one level. What is the repository name in Harbor?"
+    options:
+      - id: a
+        text: "`vendored/vendor/tools`"
+        explanation: "Not correct. This is what happens when no path part is removed. One level of flattening removes `vendor`."
+      - id: b
+        text: "`vendor/tools`"
+        explanation: "Not correct. The destination namespace is always put in front of the name."
+      - id: c
+        text: "`tools`"
+        explanation: "Not correct. The destination namespace is placed in front of the name, so the project is `vendored`."
+      - id: d
+        text: "`vendored/tools`"
+        explanation: "Correct. One level of flattening removes the first path part, `vendor`, and the namespace is put in front of the rest."
+    correct_option: d
+    explanation: "Correct. One level of flattening removes the first path part, `vendor`, and the namespace is put in front of the rest."
+
+  - id: ats103-010-02-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Select tags with a filter"
+    source_readings:
+      - sections/section-010/module-02/course-02-rule-options.md
+    prompt: "A pull rule must copy only tags that start with `1.`. Which filter does that?"
+    options:
+      - id: a
+        text: "A tag filter with the pattern `1.*` that matches."
+        explanation: "Correct. The tag filter tests tag names, and `*` matches any characters except a slash."
+      - id: b
+        text: "A name filter with the pattern `1.*`."
+        explanation: "Not correct. The name filter tests repository names, not tags."
+      - id: c
+        text: "A label filter with the value `1.*`."
+        explanation: "Not correct. A label filter selects by Harbor label, and it works only when the source is a Harbor."
+      - id: d
+        text: "A resource filter with the value `1.*`."
+        explanation: "Not correct. The resource filter selects the kind of artifact, such as images or charts."
+    correct_option: a
+    explanation: "Correct. The tag filter tests tag names, and `*` matches any characters except a slash."
+
+  - id: ats103-010-02-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use the override option"
+    source_readings:
+      - sections/section-010/module-02/course-02-rule-options.md
+    prompt: "The supplier moves the tag `1.2` to a new image. What does the rule do if override is off and the tag already exists in the destination?"
+    options:
+      - id: a
+        text: "It replaces the tag, because the source is newer."
+        explanation: "Not correct. Replacing is what override does when it is on."
+      - id: b
+        text: "It leaves the existing tag as it is."
+        explanation: "Correct. With override off, a tag that exists in the destination is not replaced."
+      - id: c
+        text: "It deletes the tag in the destination."
+        explanation: "Not correct. A replication rule never deletes in a pull direction because of an override setting."
+      - id: d
+        text: "It fails the execution with an error."
+        explanation: "Not correct. A skipped tag is not an error."
+    correct_option: b
+    explanation: "Correct. With override off, a tag that exists in the destination is not replaced."
+
+  - id: ats103-010-02-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know what the bandwidth limit caps"
+    source_readings:
+      - sections/section-010/module-02/course-02-rule-options.md
+    prompt: "What does the speed setting of a rule cap?"
+    options:
+      - id: a
+        text: "The total bandwidth of the whole execution."
+        explanation: "Not correct. The limit applies to each task."
+      - id: b
+        text: "The number of tags copied per hour."
+        explanation: "Not correct. The speed limit is about bandwidth, not the number of tags."
+      - id: c
+        text: "The bandwidth of each task, in kilobytes per second."
+        explanation: "Correct. The limit applies to each task, not to the whole execution."
+      - id: d
+        text: "The size of the largest layer Harbor accepts."
+        explanation: "Not correct. Layer size is not part of this setting."
+    correct_option: c
+    explanation: "Correct. The limit applies to each task, not to the whole execution."
+
+  - id: ats103-010-02-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know what a schedule copies"
+    source_readings:
+      - sections/section-010/module-02/course-03-scheduled-triggers.md
+    prompt: "A scheduled pull rule runs while the supplier has deleted a tag that Harbor already holds. What happens to Harbor's copy?"
+    options:
+      - id: a
+        text: "It is deleted at the next run."
+        explanation: "Not correct. Deletions are not copied by a pull rule."
+      - id: b
+        text: "It is marked as deleted but kept for seven days."
+        explanation: "Not correct. Harbor does not do this for pull rules."
+      - id: c
+        text: "The execution fails because the tag is gone."
+        explanation: "Not correct. The tag is not selected any more, so there is nothing to fail."
+      - id: d
+        text: "It stays, because a pull rule does not copy deletions."
+        explanation: "Correct. Delete replication applies to the push direction, from Harbor to a remote."
+    correct_option: d
+    explanation: "Correct. Delete replication applies to the push direction, from Harbor to a remote."
+
+  - id: ats103-010-02-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Read an execution with no tasks"
+    source_readings:
+      - sections/section-010/module-02/course-04-failed-executions.md
+    prompt: "A run of a pull rule finishes with the status `Succeed` and zero tasks. What do you check first?"
+    options:
+      - id: a
+        text: "The filters of the rule, because they selected nothing."
+        explanation: "Correct. An execution with no tasks has nothing to do, and that counts as a success."
+      - id: b
+        text: "The endpoint credentials, because the login failed."
+        explanation: "Not correct. A failed login would produce a failed execution."
+      - id: c
+        text: "The retention policy of the destination project."
+        explanation: "Not correct. Retention runs separately and does not stop a run from creating tasks."
+      - id: d
+        text: "The Harbor database, because the tasks were lost."
+        explanation: "Not correct. A run with nothing selected simply has no tasks."
+    correct_option: a
+    explanation: "Correct. An execution with no tasks has nothing to do, and that counts as a success."
+
+  - id: ats103-010-02-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Repair a failed rule"
+    source_readings:
+      - sections/section-010/module-02/course-04-failed-executions.md
+    prompt: "A task fails because the destination project was deleted. What is the right repair?"
+    options:
+      - id: a
+        text: "Delete the rule and create it again."
+        explanation: "Not correct. Recreating the rule is not needed when only the destination is missing."
+      - id: b
+        text: "Create the project again and start a new execution of the same rule."
+        explanation: "Correct. Fix the destination in place and run again. Do not recreate the rule."
+      - id: c
+        text: "Change the trigger to event based."
+        explanation: "Not correct. The trigger decides when a run starts. It does not repair a missing project."
+      - id: d
+        text: "Wait for the next scheduled run to create the project."
+        explanation: "Not correct. Replication does not create a project by itself."
+    correct_option: b
+    explanation: "Correct. Fix the destination in place and run again. Do not recreate the rule."

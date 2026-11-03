@@ -220,3 +220,141 @@ questions:
         explanation: "Not correct. `?` matches one character, so this matches only tags like `v1`."
     correct_option: b
     explanation: "Correct. It selects tags that start with `v` and keeps development builds out."
+
+  - id: ats103-final-q10
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Tell a pull rule from a push rule"
+    source_readings:
+      - sections/section-010/module-02/course-01-pull-based-replication.md
+    prompt: "Harbor must fetch images from a supplier's registry every hour. Which rule do you create?"
+    options:
+      - id: a
+        text: "A pull rule with `src_registry` set to the supplier's endpoint and a scheduled trigger."
+        explanation: "Correct. A pull rule cannot be event based, because Harbor sees no events at the remote registry."
+      - id: b
+        text: "A push rule with `dest_registry` set to the supplier's endpoint."
+        explanation: "Not correct. A push rule sends artifacts out of Harbor."
+      - id: c
+        text: "A pull rule with the event-based trigger."
+        explanation: "Not correct. Harbor sees no events at a remote registry."
+      - id: d
+        text: "A proxy cache project with a schedule."
+        explanation: "Not correct. A proxy cache fetches on demand and has no schedule."
+    correct_option: a
+    explanation: "Correct. A pull rule cannot be event based, because Harbor sees no events at the remote registry."
+
+  - id: ats103-final-q11
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Write a six-field schedule"
+    source_readings:
+      - sections/section-030/module-02/course-01-triggers-and-manual-runs.md
+    prompt: "A colleague copies the Linux cron `0 2 * * *` into a Harbor trigger. What goes wrong?"
+    options:
+      - id: a
+        text: "Nothing. Harbor uses the same five fields as Linux."
+        explanation: "Not correct. Harbor adds a leading seconds field."
+      - id: b
+        text: "Harbor reads the first field as seconds, so the schedule means something else."
+        explanation: "Correct. Harbor's cron has six fields, starting with the seconds."
+      - id: c
+        text: "Harbor refuses every cron expression in a trigger."
+        explanation: "Not correct. Harbor accepts cron expressions with six fields."
+      - id: d
+        text: "The rule runs once a minute."
+        explanation: "Not correct. The wrong schedule is not simply every minute."
+    correct_option: b
+    explanation: "Correct. Harbor's cron has six fields, starting with the seconds."
+
+  - id: ats103-final-q12
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Pick the credential for software"
+    source_readings:
+      - sections/section-020/module-02/course-01-private-cache-and-pull-accounts.md
+    prompt: "A build job pulls from a private proxy cache project. Which credential should it use?"
+    options:
+      - id: a
+        text: "The administrator account."
+        explanation: "Not correct. This gives the job far more access than it needs."
+      - id: b
+        text: "A personal account of the team lead."
+        explanation: "Not correct. Pipelines should not share a person's login."
+      - id: c
+        text: "A project robot account with pull permission only."
+        explanation: "Correct. It belongs to one project, can expire and can be disabled without changing anyone's password."
+      - id: d
+        text: "No credential, because caches are always public."
+        explanation: "Not correct. A proxy cache project can be private."
+    correct_option: c
+    explanation: "Correct. It belongs to one project, can expire and can be disabled without changing anyone's password."
+
+  - id: ats103-final-q13
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Describe how a runtime uses a Harbor mirror"
+    source_readings:
+      - sections/section-020/module-02/course-02-pointing-nodes-at-the-cache.md
+    prompt: "A node pulls `alpine:3.22` through a cache. Where does the first request of the node go when its container runtime has a Harbor mirror configured?"
+    options:
+      - id: a
+        text: "Straight to Docker Hub, and Harbor sees nothing."
+        explanation: "Not correct. Then the mirror would have no effect."
+      - id: b
+        text: "To the Kubernetes API server, which pulls for the node."
+        explanation: "Not correct. The container runtime pulls images, not the API server."
+      - id: c
+        text: "To the Dragonfly manager."
+        explanation: "Not correct. Dragonfly is a separate setup, and this question is about a Harbor mirror."
+      - id: d
+        text: "To Harbor, and the runtime falls back to the original registry if that fails."
+        explanation: "Correct. The `server` line of `hosts.toml` is the fallback."
+    correct_option: d
+    explanation: "Correct. The `server` line of `hosts.toml` is the fallback."
+
+  - id: ats103-final-q14
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Find the owner of a preheat failure"
+    source_readings:
+      - sections/section-030/module-02/course-03-how-a-preheat-travels.md
+    prompt: "A preheat task fails because the seed peer cannot trust Harbor's certificate. Which component needs the change?"
+    options:
+      - id: a
+        text: "The seed peer, which needs Harbor's certificate authority in its trust store."
+        explanation: "Correct. The policy and the instance are correct."
+      - id: b
+        text: "The preheat policy, which needs a different tag filter."
+        explanation: "Not correct. The filter selected the right artifact."
+      - id: c
+        text: "The registry endpoint of the replication rule."
+        explanation: "Not correct. Preheating does not use a replication endpoint."
+      - id: d
+        text: "The Harbor retention policy."
+        explanation: "Not correct. Retention does not affect the download."
+    correct_option: a
+    explanation: "Correct. The policy and the instance are correct."
+
+  - id: ats103-final-q15
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Repair a failing pipeline without recreating it"
+    source_readings:
+      - sections/section-010/module-02/course-04-failed-executions.md
+    prompt: "A scheduled pull rule fails every night because its endpoint password changed. What is the right repair?"
+    options:
+      - id: a
+        text: "Delete the rule and create it with a new name."
+        explanation: "Not correct. The rule has nothing wrong in it."
+      - id: b
+        text: "Update the password in the existing endpoint and start a new execution."
+        explanation: "Correct. The rule is correct. Fix the part that is wrong, in place."
+      - id: c
+        text: "Switch the rule to the event-based trigger."
+        explanation: "Not correct. Pull rules cannot use it, and the trigger is not the problem."
+      - id: d
+        text: "Increase the bandwidth limit of the rule."
+        explanation: "Not correct. The limit does not affect a login failure."
+    correct_option: b
+    explanation: "Correct. The rule is correct. Fix the part that is wrong, in place."

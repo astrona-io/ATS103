@@ -13,6 +13,7 @@ A rule runs on a trigger. Manual and scheduled rules copy what exists when they 
 - The endpoint says where, the rule says what and when, and the execution log says what really happened.
 - Only event-based rules with delete replication turned on copy deletions.
 - An execution with zero tasks means the filters matched nothing.
+- An endpoint should hold a robot account with only the rights its rules use, never an administrator account.
 - Between two Harbor installations, the provider is `harbor`, the destination project must already exist, and copy by chunk is available.
 
 <!-- astrona:playground:destroy -->

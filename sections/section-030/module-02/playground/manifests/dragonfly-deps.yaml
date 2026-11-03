@@ -1,0 +1,102 @@
+# MySQL and Redis for the Dragonfly manager and scheduler. The Dragonfly
+# chart no longer bundles them, so they run here as plain Deployments with
+# emptyDir storage. Lab-only passwords.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dragonfly-system
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: dragonfly-system
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.4.13
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: dragonfly-root
+            - name: MYSQL_DATABASE
+              value: manager
+            - name: MYSQL_USER
+              value: dragonfly
+            - name: MYSQL_PASSWORD
+              value: dragonfly
+          ports:
+            - name: mysql
+              containerPort: 3306
+          readinessProbe:
+            exec:
+              command: ["sh", "-c", "mysqladmin ping -h 127.0.0.1 -udragonfly -pdragonfly"]
+            periodSeconds: 10
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: dragonfly-system
+spec:
+  selector:
+    app: mysql
+  ports:
+    - name: mysql
+      port: 3306
+      targetPort: mysql
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: dragonfly-system
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.4.11-alpine
+          ports:
+            - name: redis
+              containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: dragonfly-system
+spec:
+  selector:
+    app: redis
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: redis

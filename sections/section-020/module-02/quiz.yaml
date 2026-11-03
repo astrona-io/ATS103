@@ -1,0 +1,245 @@
+# Knowledge check for Run A Proxy Cache Project For A Team. Listed in astrona.yaml as a `type: quiz` entry after the module's lab.
+schema_version: 1
+kind: question_bank
+id: ats103-020-02
+course_id: ATS103
+exam_code: HARBOR
+status: draft
+provenance: Original practice material written for this course; not official exam questions.
+scope:
+  type: module
+  id: module-020-02
+  title: "Run A Proxy Cache Project For A Team"
+placement:
+  position: after
+  reading: sections/section-020/module-02/course-05-summary.md
+questions:
+  - id: ats103-020-02-q01
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Name the full name of a project robot"
+    source_readings:
+      - sections/section-020/module-02/course-01-private-cache-and-pull-accounts.md
+    prompt: "A robot account `puller` is created in the project `team-cache`. What is its full user name?"
+    options:
+      - id: a
+        text: "`robot$team-cache+puller`"
+        explanation: "Correct. A project robot's name is the prefix `robot$`, the project, a plus sign and the name."
+      - id: b
+        text: "`robot$puller`"
+        explanation: "Not correct. This leaves out the project. A project robot's full name contains it."
+      - id: c
+        text: "`team-cache/puller`"
+        explanation: "Not correct. A slash is used in repository paths, not in robot names."
+      - id: d
+        text: "`puller@team-cache`"
+        explanation: "Not correct. Harbor does not form robot names like an email address."
+    correct_option: a
+    explanation: "Correct. A project robot's name is the prefix `robot$`, the project, a plus sign and the name."
+
+  - id: ats103-020-02-q02
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Know when the robot secret is visible"
+    source_readings:
+      - sections/section-020/module-02/course-01-private-cache-and-pull-accounts.md
+    prompt: "When can you read the secret of a robot account again after it was created?"
+    options:
+      - id: a
+        text: "At any time, in the robot account list."
+        explanation: "Not correct. The list does not show the secret."
+      - id: b
+        text: "Never. Harbor shows it once, so it must be saved at once or replaced."
+        explanation: "Correct. A lost secret can be refreshed to a new one."
+      - id: c
+        text: "For 24 hours after creation."
+        explanation: "Not correct. There is no such grace period."
+      - id: d
+        text: "Only as the system administrator."
+        explanation: "Not correct. Even an administrator cannot read it again."
+    correct_option: b
+    explanation: "Correct. A lost secret can be refreshed to a new one."
+
+  - id: ats103-020-02-q03
+    type: single_choice
+    difficulty: beginner
+    learning_objective: "Choose the permission for a cache robot"
+    source_readings:
+      - sections/section-020/module-02/course-01-private-cache-and-pull-accounts.md
+    prompt: "A build job only needs to pull from a private proxy cache project. Which permission is enough?"
+    options:
+      - id: a
+        text: "Push on the resource `repository`."
+        explanation: "Not correct. Nobody can push to a proxy cache project, and the job does not need it."
+      - id: b
+        text: "The project administrator role."
+        explanation: "Not correct. This is far more than a pull needs."
+      - id: c
+        text: "Pull on the resource `repository`."
+        explanation: "Correct. Give software the least access it needs."
+      - id: d
+        text: "Create on the resource `robot`."
+        explanation: "Not correct. This would let the job create more accounts."
+    correct_option: c
+    explanation: "Correct. Give software the least access it needs."
+
+  - id: ats103-020-02-q04
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Write a pod image name for the cache"
+    source_readings:
+      - sections/section-020/module-02/course-02-pointing-nodes-at-the-cache.md
+    prompt: "A pod must pull `alpine:3.22` through the cache project `team-cache` at `harbor.example.com`. Which image name does it use?"
+    options:
+      - id: a
+        text: "`harbor.example.com/team-cache/alpine:3.22`"
+        explanation: "Not correct. The `library/` part is missing, so the upstream path does not exist."
+      - id: b
+        text: "`team-cache/harbor.example.com/library/alpine:3.22`"
+        explanation: "Not correct. The registry address always comes first."
+      - id: c
+        text: "`harbor.example.com/library/alpine:3.22`"
+        explanation: "Not correct. The cache project name is missing."
+      - id: d
+        text: "`harbor.example.com/team-cache/library/alpine:3.22`"
+        explanation: "Correct. Docker Hub's official images keep the `library/` part of their path."
+    correct_option: d
+    explanation: "Correct. Docker Hub's official images keep the `library/` part of their path."
+
+  - id: ats103-020-02-q05
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know what override_path does"
+    source_readings:
+      - sections/section-020/module-02/course-02-pointing-nodes-at-the-cache.md
+    prompt: "What does `override_path = true` do in a containerd `hosts.toml` mirror entry?"
+    options:
+      - id: a
+        text: "It tells the runtime that the path in the host is complete, so it adds nothing to it."
+        explanation: "Correct. The cache project name is already in the path."
+      - id: b
+        text: "It lets the runtime push images to the mirror."
+        explanation: "Not correct. Pushing is controlled by the capabilities, and a cache refuses pushes."
+      - id: c
+        text: "It makes the runtime ignore the original registry."
+        explanation: "Not correct. The `server` line is still the fallback."
+      - id: d
+        text: "It sends the credentials of the node to the mirror."
+        explanation: "Not correct. Credentials come from a pull secret, not from this setting."
+    correct_option: a
+    explanation: "Correct. The cache project name is already in the path."
+
+  - id: ats103-020-02-q06
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Use an image pull secret"
+    source_readings:
+      - sections/section-020/module-02/course-02-pointing-nodes-at-the-cache.md
+    prompt: "A pod in the namespace `builds` pulls from a private cache. Where must the pull secret be?"
+    options:
+      - id: a
+        text: "In the namespace `harbor`, next to Harbor."
+        explanation: "Not correct. A pod cannot use a secret from another namespace."
+      - id: b
+        text: "In the namespace `builds`, because a secret works only for pods in its own namespace."
+        explanation: "Correct. The pod or its service account names it under `imagePullSecrets`."
+      - id: c
+        text: "In `kube-system`, where every pod can read it."
+        explanation: "Not correct. Secrets are not shared between namespaces."
+      - id: d
+        text: "On the node, in a file named `hosts.toml`."
+        explanation: "Not correct. That file configures the runtime. It is not a pull secret."
+    correct_option: b
+    explanation: "Correct. The pod or its service account names it under `imagePullSecrets`."
+
+  - id: ats103-020-02-q07
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Read the pull time"
+    source_readings:
+      - sections/section-020/module-02/course-03-reading-the-cache.md
+    prompt: "Which artifact field does the default retention of a cache project use to decide what expires?"
+    options:
+      - id: a
+        text: "`push_time`, the time the copy was stored."
+        explanation: "Not correct. A frequently pulled image would then expire, which is the opposite of what a cache wants."
+      - id: b
+        text: "`size`, the largest artifact first."
+        explanation: "Not correct. The retention does not look at size."
+      - id: c
+        text: "`pull_time`, the time the artifact was last pulled."
+        explanation: "Correct. An artifact nobody pulls any more expires first."
+      - id: d
+        text: "`digest`, in alphabetical order."
+        explanation: "Not correct. The digest has no order that means anything for retention."
+    correct_option: c
+    explanation: "Correct. An artifact nobody pulls any more expires first."
+
+  - id: ats103-020-02-q08
+    type: single_choice
+    difficulty: intermediate
+    learning_objective: "Know what a full quota does"
+    source_readings:
+      - sections/section-020/module-02/course-03-reading-the-cache.md
+    prompt: "The storage quota of a cache project is full. A client pulls an image that is not cached yet. What happens?"
+    options:
+      - id: a
+        text: "Harbor streams the image without storing it."
+        explanation: "Not correct. A proxy cache stores the copy, and a full quota stops this."
+      - id: b
+        text: "Harbor deletes the oldest artifact and continues."
+        explanation: "Not correct. Harbor does not delete artifacts to make room."
+      - id: c
+        text: "The pull works, and the quota is ignored for caches."
+        explanation: "Not correct. A cache project counts against its quota like any other."
+      - id: d
+        text: "The pull fails, because Harbor cannot store the copy."
+        explanation: "Correct. Docker Hub can be healthy and the pull still fails."
+    correct_option: d
+    explanation: "Correct. Docker Hub can be healthy and the pull still fails."
+
+  - id: ats103-020-02-q09
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Find the cause of a path error"
+    source_readings:
+      - sections/section-020/module-02/course-04-troubleshooting-a-proxy-cache.md
+    prompt: "A pull of `team-cache/alpine:3.22` fails, but `team-cache/library/alpine:3.22` works. What is the cause?"
+    options:
+      - id: a
+        text: "The first path leaves out `library/`, so the upstream path does not exist."
+        explanation: "Correct. Check the path first for a `404`."
+      - id: b
+        text: "The endpoint credentials expired."
+        explanation: "Not correct. Then the second pull would fail too."
+      - id: c
+        text: "Docker Hub's pull limit was reached."
+        explanation: "Not correct. Then the second pull would fail too."
+      - id: d
+        text: "The project quota is full."
+        explanation: "Not correct. Then the second pull would fail too, unless it is already cached."
+    correct_option: a
+    explanation: "Correct. Check the path first for a `404`."
+
+  - id: ats103-020-02-q10
+    type: single_choice
+    difficulty: advanced
+    learning_objective: "Choose the first check for a failing endpoint"
+    source_readings:
+      - sections/section-020/module-02/course-04-troubleshooting-a-proxy-cache.md
+    prompt: "Images already in the cache pull fine, but the first pull of a new image fails. What do you check first?"
+    options:
+      - id: a
+        text: "Whether the project is public or private."
+        explanation: "Not correct. Cached images pull fine, so access to the project works."
+      - id: b
+        text: "Whether the endpoint answers a ping with its stored credentials."
+        explanation: "Correct. The cache serves what it holds, so the problem is on the way to the upstream."
+      - id: c
+        text: "Whether the robot account has expired."
+        explanation: "Not correct. An expired robot would also fail the cached images."
+      - id: d
+        text: "Whether Harbor has a replication rule for the image."
+        explanation: "Not correct. A proxy cache does not use a replication rule."
+    correct_option: b
+    explanation: "Correct. The cache serves what it holds, so the problem is on the way to the upstream."
