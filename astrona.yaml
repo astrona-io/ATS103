@@ -13,7 +13,7 @@
 training:
   id: ATS103
   title: "Harbor: Replication, P2P Preheating & Remote Registries"
-  maturity: draft
+  maturity: alpha
   description: >
     Training material covering the Replication, P2P Preheating & Remote
     Registries domain of the Harbor training path: registry endpoints and
